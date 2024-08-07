@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 
 class SystemRequirements extends StatelessWidget {
-  const SystemRequirements({super.key});
+  final String os;
+  final String processor;
+  final String memory;
+  final String graphics;
+  const SystemRequirements(
+      {super.key,
+      required this.os,
+      required this.processor,
+      required this.memory,
+      required this.graphics});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      // height: 200,
       width: double.maxFinite - 100,
       decoration: BoxDecoration(
           border: Border.all(color: Color.fromARGB(247, 147, 113, 113)),
           borderRadius: BorderRadius.circular(20)),
-      child: const SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -31,7 +41,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
-              "WIN 7-64 bit",
+              os,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
                   fontSize: 25,
@@ -46,7 +56,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
-              "Intel i3-2100 / AMD A8-5600k",
+              processor,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
                   fontSize: 25,
@@ -61,7 +71,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
-              "8 GB RAM",
+              memory,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
                   fontSize: 25,
@@ -76,7 +86,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
-              "GeForce GTX 630 / Radeon HD 6570",
+              graphics,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
                   fontSize: 25,

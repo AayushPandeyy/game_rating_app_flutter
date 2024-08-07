@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/screens/GameDetailsPage.dart';
+import 'package:provider/provider.dart';
 
 class GameCard extends StatefulWidget {
   final String imageUrl;
@@ -22,7 +25,7 @@ class _GameCardState extends State<GameCard> {
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
               image: NetworkImage(widget.imageUrl),
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
         ),
