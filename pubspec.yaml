@@ -91,6 +91,9 @@ flutter:
     - family: AldotheApache
       fonts:
         - asset: fonts/AldotheApache.ttf
+    - family: Rebellion
+      fonts:
+        - asset: fonts/RebellionSquad-ZpprZ.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/widgets/detailsScreen_widgets/DetailsBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
@@ -73,6 +74,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                       ),
                       child: Container()),
                   const SizedBox(
+                    height: 10,
+                  ),
+                  DetailsBox(),
+                  SizedBox(
                     height: 10,
                   ),
                   Container(
