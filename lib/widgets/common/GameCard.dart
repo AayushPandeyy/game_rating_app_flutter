@@ -20,12 +20,11 @@ class _GameCardState extends State<GameCard> {
       children: [
         Container(
           width: 300,
-          height: 400,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
               image: NetworkImage(widget.imageUrl),
-              fit: BoxFit.contain,
+              fit: BoxFit.fitWidth,
             ),
           ),
         ),

@@ -77,7 +77,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   ),
                   Container(
                     width: 300,
-                    height: 70,
+                    // height: 70,
                     decoration: BoxDecoration(
                         border: const GradientBoxBorder(
                           gradient: LinearGradient(

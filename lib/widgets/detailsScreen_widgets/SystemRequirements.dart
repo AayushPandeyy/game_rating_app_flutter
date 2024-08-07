@@ -41,6 +41,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
+              textAlign: TextAlign.center,
               os,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
@@ -56,6 +57,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
+              textAlign: TextAlign.center,
               processor,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
@@ -71,6 +73,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
+              textAlign: TextAlign.center,
               memory,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
@@ -86,6 +89,7 @@ class SystemRequirements extends StatelessWidget {
                   fontFamily: "AldotheApache", fontSize: 20, color: Colors.red),
             ),
             Text(
+              textAlign: TextAlign.center,
               graphics,
               style: TextStyle(
                   fontFamily: "SpaceGrotesk",
