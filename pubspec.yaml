@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   carousel_slider:
+  gradient_borders: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,15 @@ flutter:
     - family: Gabarito
       fonts:
         - asset: fonts/Gabarito-VariableFont_wght.ttf
+    - family: SuperPixel
+      fonts:
+        - asset: fonts/SuperPixel-m2L8j.ttf
+    - family: Debug
+      fonts:
+        - asset: fonts/DebugFreeTrial-MVdYB.otf
+    - family: AldotheApache
+      fonts:
+        - asset: fonts/AldotheApache.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
