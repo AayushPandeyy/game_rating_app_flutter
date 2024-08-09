@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/utilities/RatingDialog.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/DetailsBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -26,6 +27,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     List<Widget> screenshots = game.screenshotImageUrls
         .map((url) => Image(image: NetworkImage(url)))
         .toList();
+    double rating = game.getFinalRating();
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -76,8 +78,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  DetailsBox(),
-                  SizedBox(
+                  const DetailsBox(),
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -121,13 +123,46 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      for (var i = 0; i < 5; i++)
-                        const Icon(
-                          Icons.star,
-                          size: 50,
-                          color: Colors.pink,
-                        )
+                      Text(
+                        "$rating / 10",
+                        style: const TextStyle(
+                            fontFamily: "Gabarito",
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.pink),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.star,
+                        size: 50,
+                        color: Colors.pink,
+                      )
                     ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      RatingDialog().showRatingDialog(context);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 200,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.pink),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: const Center(
+                          child: Text(
+                        "Rate Now",
+                        style: TextStyle(
+                            fontFamily: "Gabarito",
+                            fontSize: 20,
+                            color: Colors.pink),
+                      )),
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
