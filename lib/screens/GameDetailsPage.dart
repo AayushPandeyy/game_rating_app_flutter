@@ -17,6 +17,7 @@ class GameDetailsPage extends StatefulWidget {
 class _GameDetailsPageState extends State<GameDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    List<String> screenshotImageUrls = ['https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png','https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png'];
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
     if (game == null) {
@@ -24,10 +25,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         child: Text("No game"),
       );
     }
-    List<Widget> screenshots = game.screenshotImageUrls
+    List<Widget> screenshots = screenshotImageUrls
         .map((url) => Image(image: NetworkImage(url)))
         .toList();
-    double rating = game.getFinalRating();
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -124,7 +124,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "$rating / 10",
+                        "4 / 10",
                         style: const TextStyle(
                             fontFamily: "Gabarito",
                             fontSize: 40,
@@ -185,10 +185,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                     height: 10,
                   ),
                   SystemRequirements(
-                    os: game.systemRequirements[0],
-                    processor: game.systemRequirements[1],
-                    memory: game.systemRequirements[2],
-                    graphics: game.systemRequirements[3],
+                    os: game.os,
+                    processor: game.processor,
+                    memory: game.memory,
+                    graphics: game.graphics
                   ),
                 ],
               ),

@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => GameDetailsPage()));
               gameProvider.selectGame(game);
             },
-            child: GameCard(imageUrl: game.imageUrl, date: game.date)))
+            child: GameCard(imageUrl: game.imageUrl, genre: game.genre)))
         .toList();
     return SafeArea(
       child: Scaffold(

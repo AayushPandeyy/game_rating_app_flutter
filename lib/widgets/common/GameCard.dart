@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 
 class GameCard extends StatefulWidget {
   final String imageUrl;
-  final String date;
-  const GameCard({super.key, required this.imageUrl, required this.date});
+  final String genre;
+  const GameCard({super.key, required this.imageUrl, required this.genre});
 
   @override
   State<GameCard> createState() => _GameCardState();
@@ -38,7 +38,7 @@ class _GameCardState extends State<GameCard> {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Text(
-              widget.date,
+              widget.genre,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,

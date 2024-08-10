@@ -1,29 +1,74 @@
 class Game {
+  final String id;
   final String title;
-  final String imageUrl;
+  final String genre;
+  final String developer;
+  final DateTime releaseDate;
+  final double rating;
+  final String platform;
   final String description;
-  final List<String> screenshotImageUrls;
-  final List<String> systemRequirements;
-  final String date;
-  late final int totalRating;
-  final int totalRaters;
+  final String os;
+  final String processor;
+  final String memory;
+  final String graphics;
+  final String price;
+  final String publisher;
+  final String imageUrl;
 
   Game({
+    required this.id,
     required this.title,
-    required this.imageUrl,
+    required this.genre,
+    required this.developer,
+    required this.releaseDate,
+    required this.rating,
+    required this.platform,
     required this.description,
-    required this.screenshotImageUrls,
-    required this.systemRequirements,
-    required this.date,
-    required this.totalRating,
-    required this.totalRaters,
+    required this.os,
+    required this.processor,
+    required this.memory,
+    required this.graphics,
+    required this.price,
+    required this.publisher,
+    required this.imageUrl,
   });
 
-  double getFinalRating() {
-    return (totalRating / totalRaters);
+  factory Game.fromJson(Map<String, dynamic> json) {
+    return Game(
+      id: json['_id'],
+      title: json['title'],
+      genre: json['genre'],
+      developer: json['developer'],
+      releaseDate: DateTime.parse(json['releaseDate']),
+      rating: json['rating'].toDouble(),
+      platform: json['platform'],
+      description: json['description'],
+      os: json['OS'],
+      processor: json['Processor'],
+      memory: json['Memory'],
+      graphics: json['Graphics'],
+      price: json['Price'],
+      publisher: json['Publisher'],
+      imageUrl: json['imageUrl'],
+    );
   }
 
-  void setRating(int rating){
-    totalRating+=rating;
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'genre': genre,
+      'developer': developer,
+      'releaseDate': releaseDate.toIso8601String(),
+      'rating': rating,
+      'platform': platform,
+      'description': description,
+      'OS': os,
+      'Processor': processor,
+      'Memory': memory,
+      'Graphics': graphics,
+      'Price': price,
+      'Publisher': publisher,
+      'imageUrl': imageUrl,
+    };
   }
 }
