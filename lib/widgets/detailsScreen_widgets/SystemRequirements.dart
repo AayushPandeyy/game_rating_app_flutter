@@ -18,23 +18,13 @@ class SystemRequirements extends StatelessWidget {
       // height: 200,
       width: double.maxFinite - 100,
       decoration: BoxDecoration(
-          border: Border.all(color: Color.fromARGB(247, 147, 113, 113)),
+          border: Border.all(color: Colors.green),
           borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "System Requirements",
-              style: TextStyle(
-                  fontFamily: "AldotheApache",
-                  fontSize: 40,
-                  color: Colors.yellow),
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Text(
               "OS",
               style: TextStyle(

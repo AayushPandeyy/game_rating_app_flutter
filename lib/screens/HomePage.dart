@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/screens/GameDetailsPage.dart';
 import 'package:game_rating_app/widgets/common/GameCard.dart';
@@ -15,6 +16,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      final gameProvider = Provider.of<GameProvider>(context, listen: false);
+      gameProvider.fetchGames(); // Fetch games after the first build
+    }); // Fetch games when the widget is initialized
+  }
+
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context);
@@ -31,77 +41,81 @@ class _HomePageState extends State<HomePage> {
         .toList();
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          height: double.maxFinite,
-          width: double.maxFinite,
-          decoration: BoxDecoration(color: Colors.black),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Center(
-                    child: const Text(
-                      "Trending",
-                      style: TextStyle(
-                          color: Colors.yellow,
-                          fontSize: 40,
-                          fontFamily: "AldotheApache",
-                          fontWeight: FontWeight.bold),
-                    ),
+        body: gameProvider.isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                height: double.maxFinite,
+                width: double.maxFinite,
+                decoration: BoxDecoration(color: Colors.black),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Center(
+                          child: const Text(
+                            "Trending",
+                            style: TextStyle(
+                                color: Colors.yellow,
+                                fontSize: 40,
+                                fontFamily: "AldotheApache",
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CarouselSlider(
+                        items: carouselItems,
+                        options: CarouselOptions(
+                            aspectRatio: 16 / 7,
+                            height: 400,
+                            animateToClosest: true,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            autoPlay: true),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "All Time Best",
+                        style: TextStyle(
+                            fontFamily: "Gabarito",
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.yellow),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const GameRatingCard(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const GameRatingCard(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const GameRatingCard(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const GameRatingCard(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const GameRatingCard(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CarouselSlider(
-                  items: carouselItems,
-                  options: CarouselOptions(
-                      aspectRatio: 16 / 7,
-                      height: 400,
-                      animateToClosest: true,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      autoPlay: true),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "All Time Best",
-                  style: TextStyle(
-                      fontFamily: "Gabarito",
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.yellow),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const GameRatingCard(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const GameRatingCard(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const GameRatingCard(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const GameRatingCard(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const GameRatingCard(),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

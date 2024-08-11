@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/utilities/RatingDialog.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/DetailsBox.dart';
+import 'package:game_rating_app/widgets/detailsScreen_widgets/ReviewBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,10 @@ class GameDetailsPage extends StatefulWidget {
 class _GameDetailsPageState extends State<GameDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    List<String> screenshotImageUrls = ['https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png','https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png'];
+    List<String> screenshotImageUrls = [
+      'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png',
+      'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png'
+    ];
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
     if (game == null) {
@@ -78,31 +82,32 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const DetailsBox(),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   Container(
-                    width: 300,
-                    // height: 70,
+                    width: double.maxFinite,
+                    // height: 50,
                     decoration: BoxDecoration(
                         border: const GradientBoxBorder(
                           gradient: LinearGradient(
-                              colors: [Colors.red, Colors.black],
+                              colors: [Colors.black, Colors.red],
                               stops: [0.4, 0.7]),
                         ),
-                        borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(10)),
                     child: Center(
                       child: Text(
+                        textAlign: TextAlign.center,
                         game.title,
                         style: const TextStyle(
-                            fontSize: 40,
-                            fontFamily: "Debug",
+                            fontSize: 30,
+                            fontFamily: "AldotheApache",
                             fontWeight: FontWeight.bold,
                             color: Colors.red),
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const DetailsBox(),
                   const SizedBox(
                     height: 10,
                   ),
@@ -184,12 +189,32 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  SystemRequirements(
-                    os: game.os,
-                    processor: game.processor,
-                    memory: game.memory,
-                    graphics: game.graphics
+                  Text(
+                    "System Requirements",
+                    style: TextStyle(
+                        fontFamily: "AldotheApache",
+                        fontSize: 40,
+                        color: Colors.yellow),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SystemRequirements(
+                      os: game.os,
+                      processor: game.processor,
+                      memory: game.memory,
+                      graphics: game.graphics),
+                  Text(
+                    "Game Reviews",
+                    style: TextStyle(
+                        fontFamily: "AldotheApache",
+                        fontSize: 40,
+                        color: Colors.yellow),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  const ReviewBox()
                 ],
               ),
             ),

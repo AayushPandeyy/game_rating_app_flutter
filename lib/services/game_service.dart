@@ -4,7 +4,7 @@ import 'package:game_rating_app/models/Game.dart';
 import 'package:http/http.dart' as http;
 
 class GameService {
-  final String baseUrl = "http://192.168.1.99:8081/api/game";
+  final String baseUrl = "http://192.168.1.105:8081/api/game";
   // Fetch all games
   Future<List<Game>> fetchGames() async {
     final response = await http.get(Uri.parse(baseUrl));
