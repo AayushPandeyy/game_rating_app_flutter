@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
-import 'package:game_rating_app/utilities/RatingDialog.dart';
+import 'package:game_rating_app/screens/RateGameScreen.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/DetailsBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/ReviewBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
@@ -125,12 +125,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "4 / 10",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontFamily: "Gabarito",
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      RatingDialog().showRatingDialog(context);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const RateGameScreen()));
                     },
                     child: Container(
                       height: 50,
@@ -189,14 +189,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     "System Requirements",
                     style: TextStyle(
                         fontFamily: "AldotheApache",
                         fontSize: 40,
                         color: Colors.yellow),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SystemRequirements(
@@ -204,23 +204,23 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                       processor: game.processor,
                       memory: game.memory,
                       graphics: game.graphics),
-                  Text(
+                  const Text(
                     "Game Reviews",
                     style: TextStyle(
                         fontFamily: "AldotheApache",
                         fontSize: 40,
                         color: Colors.yellow),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   CarouselSlider(
-                    items: [
-                      const ReviewBox(),
-                      const ReviewBox(),
-                      const ReviewBox(),
-                      const ReviewBox(),
-                      const ReviewBox()
+                    items: const[
+                       ReviewBox(),
+                       ReviewBox(),
+                       ReviewBox(),
+                       ReviewBox(),
+                       ReviewBox()
                     ],
                     options: CarouselOptions(
                       height: 350,

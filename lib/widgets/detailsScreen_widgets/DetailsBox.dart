@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
@@ -8,6 +9,7 @@ class DetailsBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width * 0.04;
     final gameprovider = Provider.of<GameProvider>(context);
     final game = gameprovider.selectedGame;
     return Container(
@@ -17,6 +19,7 @@ class DetailsBox extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -33,12 +36,15 @@ class DetailsBox extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                Text(
+                AutoSizeText(
+                  maxLines: 2,
+                  maxFontSize: 20,
+                  // minFontSize: 1,
                   game!.publisher,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  // textAlign: TextAlign.center,
+                  style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      // fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
                 ),
@@ -94,7 +100,9 @@ class DetailsBox extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
                 ),
-                SizedBox(),
+                SizedBox(
+                  width: 5,
+                ),
                 Text(
                   "Free",
                   textAlign: TextAlign.center,
