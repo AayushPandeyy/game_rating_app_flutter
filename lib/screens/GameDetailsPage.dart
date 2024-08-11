@@ -214,7 +214,19 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  const ReviewBox()
+                  CarouselSlider(
+                    items: [
+                      const ReviewBox(),
+                      const ReviewBox(),
+                      const ReviewBox(),
+                      const ReviewBox(),
+                      const ReviewBox()
+                    ],
+                    options: CarouselOptions(
+                      height: 350,
+                      enableInfiniteScroll: false,
+                    ),
+                  )
                 ],
               ),
             ),

@@ -16,9 +16,10 @@ class SystemRequirements extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // height: 200,
-      width: double.maxFinite - 100,
+      width: 300,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.green),
+          color: const Color.fromARGB(255, 83, 76, 76),
+          // border: Border.all(color: Colors.green),
           borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
