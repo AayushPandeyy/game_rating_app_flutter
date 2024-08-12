@@ -9,7 +9,6 @@ class DetailsBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double fontSize = MediaQuery.of(context).size.width * 0.04;
     final gameprovider = Provider.of<GameProvider>(context);
     final game = gameprovider.selectedGame;
     return Container(
@@ -37,14 +36,11 @@ class DetailsBox extends StatelessWidget {
                   width: 5,
                 ),
                 AutoSizeText(
-                  maxLines: 2,
-                  maxFontSize: 20,
-                  // minFontSize: 1,
+                  // maxLines: 1,
+                  // maxFontSize: 40,
                   game!.publisher,
-                  // textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
-                      // fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
                 ),
@@ -71,12 +67,11 @@ class DetailsBox extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                Text(
+                AutoSizeText(
                   game.developer,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
                 ),
@@ -103,12 +98,11 @@ class DetailsBox extends StatelessWidget {
                 SizedBox(
                   width: 5,
                 ),
-                Text(
+                AutoSizeText(
                   "Free",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
                 ),

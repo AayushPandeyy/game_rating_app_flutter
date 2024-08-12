@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ReviewBox extends StatefulWidget {
-  const ReviewBox({super.key});
+  final String title;
+  final String author;
+  final String content;
+  const ReviewBox(
+      {super.key,
+      required this.title,
+      required this.author,
+      required this.content});
 
   @override
   State<ReviewBox> createState() => _ReviewBoxState();
@@ -33,17 +40,17 @@ class _ReviewBoxState extends State<ReviewBox> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const FittedBox(
+            FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
                 textAlign: TextAlign.center,
-                "A Gaming Masterpiece",
+                widget.title,
                 style: TextStyle(
                     fontFamily: "Gabarito", fontSize: 30, color: Colors.white),
               ),
             ),
-            const Text(
-              "By Aayush Pandey",
+            Text(
+              "By ${widget.author}",
               style: TextStyle(
                   fontFamily: "Gabarito", fontSize: 15, color: Colors.grey),
             ),
@@ -63,7 +70,7 @@ class _ReviewBoxState extends State<ReviewBox> {
               child: SingleChildScrollView(
                 child: Container(
                   child: Text(
-                    "The Legend of Zelda: Breath of the Wild is an absolute masterpiece that redefines what an open-world game can be. From the moment you step into the vast, beautifully rendered world of Hyrule, you're given the freedom to explore at your own pace, tackling challenges in any order you choose. The game's innovative mechanics, like weapon durability and dynamic weather, add layers of strategy to every encounter, while the sheer variety of environments and puzzles keeps the experience fresh from start to finish. Whether you're scaling mountains, solving intricate puzzles, or engaging in epic battles, every moment in Breath of the Wild feels like an adventure, making it one of the most captivating and immersive games I've ever played.",
+                    widget.content,
                     overflow: TextOverflow.fade,
                     style: TextStyle(color: Colors.white),
                   ),

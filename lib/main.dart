@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/providers/RatingProvider.dart';
 import 'package:game_rating_app/screens/HomePage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (context) => GameProvider(), child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => GameProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => RatingProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -35,9 +35,7 @@ class SystemRequirements extends StatelessWidget {
               textAlign: TextAlign.center,
               os,
               style: TextStyle(
-                  fontFamily: "SpaceGrotesk",
-                  fontSize: 25,
-                  color: Colors.white),
+                  fontFamily: "Gabarito", fontSize: 25, color: Colors.white),
             ),
             SizedBox(
               height: 10,
@@ -51,9 +49,7 @@ class SystemRequirements extends StatelessWidget {
               textAlign: TextAlign.center,
               processor,
               style: TextStyle(
-                  fontFamily: "SpaceGrotesk",
-                  fontSize: 25,
-                  color: Colors.white),
+                  fontFamily: "Gabarito", fontSize: 25, color: Colors.white),
             ),
             SizedBox(
               height: 10,
@@ -67,9 +63,7 @@ class SystemRequirements extends StatelessWidget {
               textAlign: TextAlign.center,
               memory,
               style: TextStyle(
-                  fontFamily: "SpaceGrotesk",
-                  fontSize: 25,
-                  color: Colors.white),
+                  fontFamily: "Gabarito", fontSize: 25, color: Colors.white),
             ),
             SizedBox(
               height: 10,
@@ -83,9 +77,7 @@ class SystemRequirements extends StatelessWidget {
               textAlign: TextAlign.center,
               graphics,
               style: TextStyle(
-                  fontFamily: "SpaceGrotesk",
-                  fontSize: 25,
-                  color: Colors.white),
+                  fontFamily: "Gabarito", fontSize: 25, color: Colors.white),
             ),
             SizedBox(
               height: 10,
