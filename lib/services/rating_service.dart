@@ -9,7 +9,6 @@ class RatingService {
   Future<List<Rating>> getRatingsByGameId(String gameId) async {
     final url = "http://192.168.1.105:8081/api/rating/gid/${gameId}";
     final response = await http.get(Uri.parse(url));
-
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       if (data.isNotEmpty) {

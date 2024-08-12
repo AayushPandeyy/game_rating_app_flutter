@@ -4,7 +4,6 @@ class Rating {
   final String content;
   final String userId;
   final String gameId;
-  final int starRating;
 
   Rating({
     required this.title,
@@ -12,7 +11,6 @@ class Rating {
     required this.content,
     required this.userId,
     required this.gameId,
-    required this.starRating,
   });
 
   factory Rating.fromJson(Map<String, dynamic> json) {
@@ -20,7 +18,6 @@ class Rating {
       title: json['title'],
       author: json['author'],
       content: json['content'],
-      starRating: json['starRating'],
       userId: json['user_id'],
       gameId: json['game_id'],
     );
@@ -33,7 +30,6 @@ class Rating {
       'content': content,
       'user_id': userId,
       'game_id': gameId,
-      'starRating': starRating
     };
   }
 }

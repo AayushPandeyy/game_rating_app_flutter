@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/services/rating_service.dart';
 import 'package:provider/provider.dart';
 
 class RateGameScreen extends StatefulWidget {
@@ -12,7 +13,58 @@ class RateGameScreen extends StatefulWidget {
 }
 
 class _RateGameScreenState extends State<RateGameScreen> {
-  TextEditingController controller = TextEditingController();
+  final RatingService service = RatingService();
+
+  void postRating() async {
+    if (selectedRating == null ||
+        titleController.text.isEmpty ||
+        contentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please complete all fields')),
+      );
+      return;
+    }
+
+    final gameProvider = Provider.of<GameProvider>(context, listen: false);
+    final game = gameProvider.selectedGame;
+
+    if (game == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No game selected')),
+      );
+      return;
+    }
+
+    final ratingData = {
+      'game_id': game.id,
+      'user_id':
+          '64d5f6f744c18213e3804567', // Replace with actual userId if applicable
+      'author': "Anonymous",
+      'title': titleController.text,
+      'content': contentController.text,
+    };
+
+    try {
+      await service.postRating(ratingData);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Rating submitted successfully')),
+      );
+      Navigator.pop(context);
+      reset();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to submit rating: $e')),
+      );
+    }
+  }
+
+  void reset() {
+    titleController.text = "";
+    contentController.text = "";
+  }
+
+  TextEditingController contentController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
   int? selectedRating;
 
   @override
@@ -114,6 +166,49 @@ class _RateGameScreenState extends State<RateGameScreen> {
                     height: 20,
                   ),
                   const Text(
+                    "Title",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: TextField(
+                      style: TextStyle(color: Colors.white),
+                      controller: titleController,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide(
+                            color: Colors.pink,
+                            width: 2.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1.5,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 20.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.grey[400],
+                          ),
+                          onPressed: () {
+                            titleController.text = "";
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Text(
                     "Leave a review",
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -121,7 +216,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: TextField(
                       style: TextStyle(color: Colors.white),
-                      controller: controller,
+                      controller: contentController,
                       maxLines: 20,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -150,7 +245,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
                             color: Colors.grey[400],
                           ),
                           onPressed: () {
-                            controller.text = "";
+                            contentController.text = "";
                           },
                         ),
                       ),
@@ -161,8 +256,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print(controller.text);
-                      print(selectedRating);
+                      postRating();
                     },
                     child: Container(
                       height: 50,

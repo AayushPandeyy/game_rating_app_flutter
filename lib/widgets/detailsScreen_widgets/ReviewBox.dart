@@ -4,12 +4,11 @@ class ReviewBox extends StatefulWidget {
   final String title;
   final String author;
   final String content;
-  final int stars;
   const ReviewBox(
       {super.key,
       required this.title,
       required this.author,
-      required this.content, required this.stars});
+      required this.content});
 
   @override
   State<ReviewBox> createState() => _ReviewBoxState();
@@ -22,11 +21,11 @@ class _ReviewBoxState extends State<ReviewBox> {
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color:
-                  Colors.white.withOpacity(0.25), // Shadow color with opacity
-              blurRadius: 10, // The higher the value, the softer the shadow
+              color: Colors.white.withOpacity(0.25),
+              // Shadow color with opacity
+              blurRadius: 5, // The higher the value, the softer the shadow
               spreadRadius:
-                  5, // The higher the value, the larger the shadow area
+                  2, // The higher the value, the larger the shadow area
               offset:
                   Offset(0, 5), // Horizontal and vertical offset of the shadow
             ),

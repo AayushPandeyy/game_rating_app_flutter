@@ -27,23 +27,23 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       final ratingProvider =
           Provider.of<RatingProvider>(context, listen: false);
       final game = gameProvider.selectedGame;
-      if (!gameProvider.isLoading) {
-        ratingProvider.fetchRatingByGameId(game!.id);
-      }
+      ratingProvider.fetchRatingByGameId(game!.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final ratingProvider = Provider.of<RatingProvider>(context);
+    final gameProvider = Provider.of<GameProvider>(context);
+    final game = gameProvider.selectedGame;
+
+    print("Ratings : ${ratingProvider.ratings}");
 
     List<String> screenshotImageUrls = [
       'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png',
       'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png'
     ];
 
-    final gameProvider = Provider.of<GameProvider>(context);
-    final game = gameProvider.selectedGame;
     if (game == null) {
       return const Center(
         child: Text("No game"),
@@ -59,7 +59,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
               title: review.title,
               author: review.author,
               content: review.content,
-              stars: review.starRating,
             ))
         .toList();
 
@@ -104,7 +103,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(game.imageUrl),
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
