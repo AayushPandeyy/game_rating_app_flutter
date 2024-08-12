@@ -4,11 +4,12 @@ class ReviewBox extends StatefulWidget {
   final String title;
   final String author;
   final String content;
+  final int stars;
   const ReviewBox(
       {super.key,
       required this.title,
       required this.author,
-      required this.content});
+      required this.content, required this.stars});
 
   @override
   State<ReviewBox> createState() => _ReviewBoxState();

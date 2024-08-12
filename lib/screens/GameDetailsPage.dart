@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -53,15 +54,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         .map((url) => Image(image: NetworkImage(url)))
         .toList();
 
-    List<Widget> reviewWidgets = ratingProvider.ratings.isEmpty
-        ? [const Center(child: Text("No reviews available"))]
-        : ratingProvider.ratings
-            .map((review) => ReviewBox(
-                  title: review.title,
-                  author: review.author,
-                  content: review.content,
-                ))
-            .toList();
+    List<Widget> reviewWidgets = ratingProvider.ratings
+        .map((review) => ReviewBox(
+              title: review.title,
+              author: review.author,
+              content: review.content,
+              stars: review.starRating,
+            ))
+        .toList();
 
     return SafeArea(
       child: Scaffold(
@@ -246,13 +246,28 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               color: Colors.yellow),
                         ),
                         const SizedBox(height: 10),
-                        CarouselSlider(
-                          items: reviewWidgets,
-                          options: CarouselOptions(
-                            height: 350,
-                            enableInfiniteScroll: false,
-                          ),
-                        ),
+                        ratingProvider.ratings.isEmpty
+                            ? Container(
+                                height: 200,
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AutoSizeText(
+                                      maxLines: 1,
+                                      "No Reviews Found",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : CarouselSlider(
+                                items: reviewWidgets,
+                                options: CarouselOptions(
+                                  height: 350,
+                                  enableInfiniteScroll: false,
+                                ),
+                              ),
                         const SizedBox(height: 10),
                       ],
                     ),

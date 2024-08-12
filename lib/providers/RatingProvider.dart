@@ -15,11 +15,13 @@ class RatingProvider extends ChangeNotifier {
   String get errorMessage => _errorMessage;
 
   Future<void> fetchRatingByGameId(String gameId) async {
+    _ratings = [];
     _isLoading = true;
     _errorMessage = '';
     notifyListeners();
     try {
       _ratings = await ratingService.getRatingsByGameId(gameId);
+      print("Ratings: $_ratings");
     } catch (e) {
       _errorMessage = 'Failed to load games: $e';
     } finally {

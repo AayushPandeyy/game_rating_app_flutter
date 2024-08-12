@@ -12,10 +12,15 @@ class RatingService {
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      List<Rating> ratings =
-          data.map((dynamic item) => Rating.fromJson(item)).toList();
-      print(ratings);
-      return ratings;
+      if (data.isNotEmpty) {
+        List<Rating> ratings =
+            data.map((dynamic item) => Rating.fromJson(item)).toList();
+        print(ratings); // Print the list of ratings for debugging
+        return ratings; // Return the list of ratings
+      } else {
+        print('No ratings found.');
+        return []; // Return an empty list if no ratings exist
+      }
     } else {
       throw Exception('Failed to load ratings');
     }
