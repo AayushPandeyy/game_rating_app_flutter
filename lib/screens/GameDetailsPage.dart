@@ -2,9 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:game_rating_app/models/Favorites.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/providers/RatingProvider.dart';
 import 'package:game_rating_app/screens/RateGameScreen.dart';
+import 'package:game_rating_app/services/favorites_service.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/DetailsBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/ReviewBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
@@ -19,6 +21,8 @@ class GameDetailsPage extends StatefulWidget {
 }
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
+  List<String> listOfGameIds = [];
+  bool isFavorited = false;
   @override
   void initState() {
     super.initState();
@@ -31,11 +35,44 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     });
   }
 
+  void getGameIdList() async {
+    try {
+      final gameProvider = Provider.of<GameProvider>(context);
+      final list = await FavoritesService()
+          .getFavoritesByUserId("64d5f6f744c18213e3804567");
+      setState(() {
+        listOfGameIds = list.map((item) => item.gameId).toList();
+      });
+      for (int i = 0; i < listOfGameIds.length; i++) {
+        if (gameProvider.selectedGame!.id == listOfGameIds[i]) {
+          setState(() {
+            isFavorited = true;
+          });
+        }
+      }
+    } catch (err) {}
+  }
+
   @override
   Widget build(BuildContext context) {
+    getGameIdList();
+
     final ratingProvider = Provider.of<RatingProvider>(context);
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
+
+    void addToFavorites() async {
+      final data = {"user_id": "64d5f6f744c18213e3804567", "game_id": game!.id};
+
+      try {
+        await FavoritesService().addFavorites(data);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Added to favorites")));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to add to favorites: $e')));
+      }
+    }
 
     List<String> screenshotImageUrls = [
       'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png',
@@ -133,8 +170,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         const SizedBox(height: 10),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => RateGameScreen()));
+                            addToFavorites();
                           },
                           child: Container(
                             height: 50,
@@ -142,9 +178,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.pink),
                                 borderRadius: BorderRadius.circular(20)),
-                            child: const Center(
+                            child: Center(
                                 child: Text(
-                              "Add to Play Later",
+                              isFavorited
+                                  ? "Already in your favorites"
+                                  : "Add to Play Later",
                               style: TextStyle(
                                   fontFamily: "Gabarito",
                                   fontSize: 20,
@@ -276,13 +314,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          // width: 250,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 87, 80, 80))),
-                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -306,6 +337,21 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         SizedBox(
                           height: 10,
                         ),
+                        Container(
+                          // width: 250,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 87, 80, 80))),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Version : 1.0",
+                          style: TextStyle(
+                              color: Colors.grey, fontFamily: "Gabarito"),
+                        )
                       ],
                     ),
                   ),
