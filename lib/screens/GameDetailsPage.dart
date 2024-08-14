@@ -37,7 +37,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
 
-
     List<String> screenshotImageUrls = [
       'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png',
       'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png'
@@ -267,6 +266,46 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                         const SizedBox(height: 10),
+                        Text(
+                          "Play Now On :",
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.grey,
+                              fontFamily: "Gabarito"),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          // width: 250,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 87, 80, 80))),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image(
+                              height: 100,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                  "https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png"),
+                            ),
+                            Image(
+                              height: 100,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                  "https://upload.wikimedia.org/wikipedia/commons/a/a7/Epic_Games_logo.png"),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
