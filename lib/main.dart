@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/providers/RatingProvider.dart';
 import 'package:game_rating_app/screens/HomePage.dart';
+import 'package:game_rating_app/screens/MainPage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const MainPage(),
       debugShowCheckedModeBanner: false,
     );
   }

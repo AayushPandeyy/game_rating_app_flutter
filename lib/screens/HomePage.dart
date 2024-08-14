@@ -21,8 +21,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       final gameProvider = Provider.of<GameProvider>(context, listen: false);
-      gameProvider.fetchGames(); // Fetch games after the first build
-    }); // Fetch games when the widget is initialized
+      gameProvider.fetchGames();
+    });
   }
 
   @override

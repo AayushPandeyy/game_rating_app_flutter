@@ -37,7 +37,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
 
-    print("Ratings : ${ratingProvider.ratings}");
 
     List<String> screenshotImageUrls = [
       'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/05/Ghostrunner-empty-streets-with-badguy.png',
@@ -136,7 +135,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const RateGameScreen()));
+                                builder: (context) => RateGameScreen()));
                           },
                           child: Container(
                             height: 50,

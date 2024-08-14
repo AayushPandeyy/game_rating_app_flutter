@@ -21,7 +21,6 @@ class RatingProvider extends ChangeNotifier {
     notifyListeners();
     try {
       _ratings = await ratingService.getRatingsByGameId(gameId);
-      print("Ratings: $_ratings");
     } catch (e) {
       _errorMessage = 'Failed to load games: $e';
     } finally {

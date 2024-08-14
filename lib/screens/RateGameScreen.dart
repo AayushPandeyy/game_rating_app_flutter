@@ -6,6 +6,7 @@ import 'package:game_rating_app/services/rating_service.dart';
 import 'package:provider/provider.dart';
 
 class RateGameScreen extends StatefulWidget {
+
   const RateGameScreen({super.key});
 
   @override
@@ -49,6 +50,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Rating submitted successfully')),
       );
+      
       Navigator.pop(context);
       reset();
     } catch (e) {
