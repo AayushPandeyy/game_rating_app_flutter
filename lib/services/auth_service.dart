@@ -53,8 +53,6 @@ class AuthService {
     }
   }
 
-
-
   Future<User?> getUser() async {
     final String? token = await getToken();
 
@@ -85,7 +83,7 @@ class AuthService {
       throw Exception("Token not found");
     }
 
-    final response = await http.get(
+    final response = await http.post(
       Uri.parse('$baseUrl/verify-token'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',

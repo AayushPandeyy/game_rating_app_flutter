@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:game_rating_app/providers/AuthProvider.dart';
+import 'package:game_rating_app/screens/MainPage.dart';
 import 'package:game_rating_app/screens/auth/SignUpScreen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -9,6 +11,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final AuthProvider authProvider = AuthProvider();
   bool obscure = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -107,7 +110,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                     onPressed: () {
-                      // _login(context);
+                      try {
+                        authProvider.login(
+                            _emailController.text, _passwordController.text);
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const MainPage()));
+                      } catch (err) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text("Error")));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:game_rating_app/providers/AuthProvider.dart';
+import 'package:game_rating_app/screens/MainPage.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -8,6 +10,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final AuthProvider authProvider = AuthProvider();
   bool obscure = true;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -103,7 +106,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
-                    // _register(context);
+                    try {
+                      authProvider.register(emailController.text,
+                          usernameController.text, passwordController.text);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const MainPage()));
+                    } catch (err) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("Error")));
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
@@ -116,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     elevation: 5,
                   ),
                   child: Text(
-                    'Register',
+                    authProvider.isLoading ? "Registering..." : 'Register',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                 ),
