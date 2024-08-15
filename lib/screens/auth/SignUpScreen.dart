@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/screens/MainPage.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -10,13 +11,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final AuthProvider authProvider = AuthProvider();
   bool obscure = true;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: Colors.black, // Background color
       body: Container(

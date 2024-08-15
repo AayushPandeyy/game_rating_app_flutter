@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:game_rating_app/models/Favorites.dart';
+import 'package:game_rating_app/providers/AuthProvider.dart';
+import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/providers/RatingProvider.dart';
 import 'package:game_rating_app/screens/RateGameScreen.dart';
@@ -32,16 +34,20 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       final gameProvider = Provider.of<GameProvider>(context, listen: false);
       final ratingProvider =
           Provider.of<RatingProvider>(context, listen: false);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final game = gameProvider.selectedGame;
       ratingProvider.fetchRatingByGameId(game!.id);
+      authProvider.getUser();
+      print(authProvider.user);
     });
   }
 
   void getGameIdList() async {
     try {
       final gameProvider = Provider.of<GameProvider>(context);
-      final list = await FavoritesService()
-          .getFavoritesByUserId("64d5f6f744c18213e3804567");
+      final authProvider = Provider.of<AuthProvider>(context);
+      final list =
+          await FavoritesService().getFavoritesByUserId(authProvider.user!.id);
       setState(() {
         listOfGameIds = list.map((item) => item.gameId).toList();
       });
@@ -59,13 +65,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   @override
   Widget build(BuildContext context) {
     getGameIdList();
-
+    final authProvider = Provider.of<AuthProvider>(context);
     final ratingProvider = Provider.of<RatingProvider>(context);
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
 
     void addToFavorites() async {
-      final data = {"user_id": "64d5f6f744c18213e3804567", "game_id": game!.id};
+      final data = {"user_id": authProvider.user!.id, "game_id": game!.id};
 
       try {
         await FavoritesService().addFavorites(data);

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService authService = AuthService();
-  late User _user;
+   User? _user;
   bool isLoggedIn = false;
 
   User? get user => _user;
