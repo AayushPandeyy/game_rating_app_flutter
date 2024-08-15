@@ -4,7 +4,7 @@ import 'package:game_rating_app/models/Favorites.dart';
 import 'package:http/http.dart' as http;
 
 class FavoritesService {
-  final String baseUrl = 'http://192.168.1.105:8081/api/favorites';
+  final String baseUrl = 'http://192.168.1.117:8081/api/favorites';
   Future<void> addFavorites(Map<String, dynamic> fav) async {
     final url = Uri.parse(baseUrl);
 
@@ -27,10 +27,8 @@ class FavoritesService {
       if (data.isNotEmpty) {
         List<Favorites> favorites =
             data.map((dynamic item) => Favorites.fromJson(item)).toList();
-        print(favorites);
         return favorites;
       } else {
-        print('No Favorites found.');
         return [];
       }
     } else {

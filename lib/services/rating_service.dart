@@ -3,21 +3,19 @@ import 'package:game_rating_app/models/Rating.dart';
 import 'package:http/http.dart' as http;
 
 class RatingService {
-  final String baseUrl = 'http://192.168.1.105:8081/api/rating';
+  final String baseUrl = 'http://192.168.1.117:8081/api/rating';
 
   // Fetch ratings by game ID
   Future<List<Rating>> getRatingsByGameId(String gameId) async {
-    final url = "http://192.168.1.105:8081/api/rating/gid/${gameId}";
+    final url = "http://192.168.1.117:8081/api/rating/gid/${gameId}";
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       if (data.isNotEmpty) {
         List<Rating> ratings =
             data.map((dynamic item) => Rating.fromJson(item)).toList();
-        print(ratings); // Print the list of ratings for debugging
         return ratings; // Return the list of ratings
       } else {
-        print('No ratings found.');
         return []; // Return an empty list if no ratings exist
       }
     } else {

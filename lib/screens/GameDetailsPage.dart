@@ -12,6 +12,7 @@ import 'package:game_rating_app/widgets/detailsScreen_widgets/ReviewBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key});
@@ -22,7 +23,8 @@ class GameDetailsPage extends StatefulWidget {
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
   List<String> listOfGameIds = [];
-  bool isFavorited = false;
+  bool isFavorite = false;
+  String favoriteButtonText = 'Add to Favorites';
   @override
   void initState() {
     super.initState();
@@ -46,7 +48,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       for (int i = 0; i < listOfGameIds.length; i++) {
         if (gameProvider.selectedGame!.id == listOfGameIds[i]) {
           setState(() {
-            isFavorited = true;
+            isFavorite = true;
+            favoriteButtonText = "Added to favorites";
           });
         }
       }
@@ -66,8 +69,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
 
       try {
         await FavoritesService().addFavorites(data);
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Added to favorites")));
+        QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: "Added to Favorites",
+            text: "${game.title} has beed added to your favorites.",
+            onConfirmBtnTap: () {
+              Navigator.of(context).pop();
+            });
+        setState(() {
+          favoriteButtonText = "Added to Favorites";
+        });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Failed to add to favorites: $e')));
@@ -170,7 +182,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         const SizedBox(height: 10),
                         GestureDetector(
                           onTap: () {
-                            addToFavorites();
+                            !isFavorite
+                                ? addToFavorites()
+                                : QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.info,
+                                    title: "Already in your Favorites",
+                                    text:
+                                        "${game.title} is already in your favorites.");
                           },
                           child: Container(
                             height: 50,
@@ -180,10 +199,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 borderRadius: BorderRadius.circular(20)),
                             child: Center(
                                 child: Text(
-                              isFavorited
-                                  ? "Already in your favorites"
-                                  : "Add to Play Later",
-                              style: TextStyle(
+                              favoriteButtonText,
+                              style: const TextStyle(
                                   fontFamily: "Gabarito",
                                   fontSize: 20,
                                   color: Colors.pink),
