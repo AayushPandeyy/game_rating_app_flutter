@@ -26,7 +26,6 @@ class AuthProvider extends ChangeNotifier {
       _errorMessage = 'Failed to load user: $err';
     } finally {
       _isLoading = false;
-
       notifyListeners();
     }
   }

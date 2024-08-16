@@ -123,8 +123,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         appBar: PreferredSize(
           preferredSize: const Size(400, 100),
           child: Container(
-            height: 50,
             color: Colors.black,
+            height: 50,
             child: Row(children: [
               const SizedBox(width: 20),
               IconButton(
@@ -146,9 +146,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         body: ratingProvider.isLoading
             ? const Center(child: CircularProgressIndicator())
             : Container(
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    image: DecorationImage(
+                        opacity: 0.2,
+                        image: NetworkImage(game.imageUrl),
+                        fit: BoxFit.contain)),
                 height: double.infinity,
                 width: double.infinity,
-                color: Colors.black,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
@@ -229,7 +234,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -238,7 +243,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               color: Colors.pink,
                             ),
                             Text(
-                              "4 ",
+                              game.rating.toString(),
                               style: TextStyle(
                                   fontFamily: "Gabarito",
                                   fontSize: 40,

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/screens/GameDetailsPage.dart';
 import 'package:game_rating_app/widgets/common/GameCard.dart';
@@ -16,24 +17,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
+  @override
+  void initState() {
+    super.initState();
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    authProvider.getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     final games = gameProvider.games;
 
     List<Widget> carouselItems = games
         .map((game) => GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => GameDetailsPage()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const GameDetailsPage()));
               gameProvider.selectGame(game);
             },
             child: GameCard(imageUrl: game.imageUrl, genre: game.genre)))
         .toList();
     return SafeArea(
       child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size(20, 50),
+          child: Container(
+              color: Colors.black,
+              child: authProvider.isLoading
+                  ? const CircularProgressIndicator()
+                  : Center(
+                      child: Text("Hello ${authProvider.user!.username}",
+                          style: TextStyle(color: Colors.white)))),
+        ),
         body: gameProvider.isLoading
             ? Center(
                 child: CircularProgressIndicator(),
@@ -46,29 +63,30 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Center(
-                          child: const Text(
-                            "Trending",
-                            style: TextStyle(
-                                color: Colors.yellow,
-                                fontSize: 40,
-                                fontFamily: "AldotheApache",
-                                fontWeight: FontWeight.bold),
+                        padding: const EdgeInsets.all(8.0),
+                        child: const SizedBox(
+                          width: 350,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              labelText: 'Search',
+                              hintText: 'Enter a search term',
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       CarouselSlider(
                         items: carouselItems,
                         options: CarouselOptions(
                             aspectRatio: 16 / 7,
                             height: 400,
                             animateToClosest: true,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
+                            enlargeCenterPage: false,
                             autoPlay: true),
                       ),
                       const SizedBox(

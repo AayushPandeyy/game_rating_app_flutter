@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/services/rating_service.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
 
     final gameProvider = Provider.of<GameProvider>(context, listen: false);
     final game = gameProvider.selectedGame;
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     if (game == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -39,8 +41,8 @@ class _RateGameScreenState extends State<RateGameScreen> {
     final ratingData = {
       'game_id': game.id,
       'user_id':
-          '64d5f6f744c18213e3804567', // Replace with actual userId if applicable
-      'author': "Anonymous",
+          authProvider.user!.id, // Replace with actual userId if applicable
+      'author': authProvider.user!.username,
       'title': titleController.text,
       'content': contentController.text,
       "starRating": selectedRating
@@ -69,6 +71,13 @@ class _RateGameScreenState extends State<RateGameScreen> {
   TextEditingController contentController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   int? selectedRating;
+
+  @override
+  void initState() {
+    super.initState();
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    authProvider.getUser();
+  }
 
   @override
   Widget build(BuildContext context) {

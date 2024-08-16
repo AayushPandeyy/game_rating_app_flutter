@@ -35,15 +35,7 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.pink, // Adjust color as needed
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
+          color: Color.fromARGB(255, 255, 223, 223), // Adjust color as needed
         ),
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -82,7 +74,7 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
             const SizedBox(width: 10),
             Container(
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: const Color.fromARGB(255, 153, 2, 2),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: IconButton(

@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:provider/provider.dart';
@@ -83,10 +82,10 @@ class DetailsBox extends StatelessWidget {
                   border:
                       Border.all(color: const Color.fromARGB(255, 87, 80, 80))),
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   textAlign: TextAlign.center,
                   "Price : ",
                   style: TextStyle(
@@ -95,13 +94,13 @@ class DetailsBox extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 AutoSizeText(
-                  "Free",
+                  game.price,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontFamily: "SpaceGrotesk"),
