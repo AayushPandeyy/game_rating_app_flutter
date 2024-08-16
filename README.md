@@ -48,7 +48,7 @@ Follow these steps to get the app up and running on your local machine.
 
 ## 📚 Documentation
 
-For more detailed information on how to use and configure this app, please refer to the [Wiki](https://github.com/aayushpandeyy/game_rating_app/wiki.md).
+For more detailed information on how to use and configure this app, please refer to the [Wiki](https://github.com/AayushPandeyy/game_rating_app_flutter/blob/master/wiki.md).
 
 ## 🤝 Contributing
 
