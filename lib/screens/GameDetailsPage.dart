@@ -26,6 +26,7 @@ class GameDetailsPage extends StatefulWidget {
 class _GameDetailsPageState extends State<GameDetailsPage> {
   List<String> listOfGameIds = [];
   bool isFavorite = false;
+  bool hasRated = false;
   String favoriteButtonText = 'Add to Favorites';
   @override
   void initState() {
@@ -42,12 +43,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     final game = gameProvider.selectedGame;
     ratingProvider.fetchRatingByGameId(game!.id);
     authProvider.getUser();
+    getGameIdList();
   }
 
   void getGameIdList() async {
     try {
       final gameProvider = Provider.of<GameProvider>(context);
       final authProvider = Provider.of<AuthProvider>(context);
+      final ratingProvider = Provider.of<RatingProvider>(context);
       final list =
           await FavoritesService().getFavoritesByUserId(authProvider.user!.id);
       setState(() {
@@ -61,6 +64,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
           });
         }
       }
+
+      ratingProvider.ratings.map((rating) =>
+          rating.userId == authProvider.user!.id &&
+                  rating.gameId == gameProvider.selectedGame!.id
+              ? setState(() {
+                  hasRated = true;
+                })
+              : setState(() {
+                  hasRated = false;
+                }));
     } catch (err) {}
   }
 
@@ -255,10 +268,20 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         const SizedBox(height: 10),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => RateGameScreen(
-                                      onSubmit: getRatings,
-                                    )));
+                            hasRated
+                                ? QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.success,
+                                    title: "Added to Favorites",
+                                    text:
+                                        "${game.title} has beed added to your favorites.",
+                                    onConfirmBtnTap: () {
+                                      Navigator.of(context).pop();
+                                    })
+                                : Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => RateGameScreen(
+                                          onSubmit: getRatings,
+                                        )));
                           },
                           child: Container(
                             height: 50,
