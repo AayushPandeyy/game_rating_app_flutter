@@ -62,23 +62,7 @@ class _HomePageState extends State<HomePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const SizedBox(
-                          width: 350,
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              labelText: 'Search',
-                              hintText: 'Enter a search term',
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      
                       const SizedBox(height: 20),
                       CarouselSlider(
                         items: carouselItems,
