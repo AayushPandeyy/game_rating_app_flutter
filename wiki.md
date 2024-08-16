@@ -62,4 +62,4 @@ Before you begin, ensure you have:
 
 ---
 
-For any other inquiries, feel free to contact [Your Name](https://github.com/aayushpandeyy).
+For any other inquiries, feel free to contact [Aayush Pandey](https://github.com/aayushpandeyy).
