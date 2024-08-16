@@ -5,21 +5,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService authService = AuthService();
-   User? _user;
+  User? _user;
   bool isLoggedIn = false;
 
   User? get user => _user;
   bool? get isLogged => isLoggedIn;
 
   bool _isLoading = false;
-  String _errorMessage = '';
+  String? _errorMessage;
 
   bool get isLoading => _isLoading;
-  String get errorMessage => _errorMessage;
+  String? get errorMessage => _errorMessage;
 
   Future<void> getUser() async {
     _isLoading = true;
-    _errorMessage = '';
     try {
       _user = (await authService.getUser())!;
       isLoggedIn = true;
@@ -34,7 +33,6 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> verify_token() async {
     _isLoading = true;
-    _errorMessage = '';
     try {
       Map<String, dynamic> result = await authService.verifyToken();
       print(result["valid"]);
@@ -44,7 +42,7 @@ class AuthProvider extends ChangeNotifier {
       }
     } catch (err) {
       print(err);
-      _errorMessage = 'Failed to  user: $err';
+      _errorMessage = 'Failed to verify token: $err';
     } finally {
       _isLoading = false;
 
@@ -59,7 +57,7 @@ class AuthProvider extends ChangeNotifier {
       String? token = await authService.register(email, username, password);
       if (token != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', token);
+        await prefs.setString('token', token);
         isLoggedIn = true;
       }
     } catch (err) {
@@ -77,16 +75,20 @@ class AuthProvider extends ChangeNotifier {
     try {
       String? token = await authService.login(email, password);
       if (token != null) {
+        _errorMessage = "Authenticated";
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', token);
+        await prefs.setString('token', token);
         isLoggedIn = true;
+      } else {
+        _errorMessage =
+            'Invalid email or password.'; // Specific failure message
       }
     } catch (err) {
-      _errorMessage = 'Failed to login user: $err';
+      _errorMessage =
+          'Failed to login user: $err'; // This handles network or other exceptions
     } finally {
       _isLoading = false;
-
-      notifyListeners();
+      notifyListeners(); // Notify listeners here, but make sure no further logic can overwrite the success message
     }
   }
 }
