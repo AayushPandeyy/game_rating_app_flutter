@@ -13,7 +13,6 @@ class FavoritesService {
 
     final response = await http.post(url, headers: headers, body: body);
 
-
     if (response.statusCode != 201) {
       throw Exception('Failed to add favorites');
     }
@@ -27,6 +26,7 @@ class FavoritesService {
       if (data.isNotEmpty) {
         List<Favorites> favorites =
             data.map((dynamic item) => Favorites.fromJson(item)).toList();
+        print("Favorites : $favorites");
         return favorites;
       } else {
         return [];

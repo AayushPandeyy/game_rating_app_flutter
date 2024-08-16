@@ -92,26 +92,12 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const GameRatingCard(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const GameRatingCard(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const GameRatingCard(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const GameRatingCard(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const GameRatingCard(),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      Column(
+                        children: [
+                          for (int index = 0; index < 5; index++)
+                            const GameRatingCard(),
+                        ],
+                      )
                     ],
                   ),
                 ),
