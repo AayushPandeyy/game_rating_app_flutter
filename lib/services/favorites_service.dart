@@ -26,7 +26,6 @@ class FavoritesService {
       if (data.isNotEmpty) {
         List<Favorites> favorites =
             data.map((dynamic item) => Favorites.fromJson(item)).toList();
-        print("Favorites : $favorites");
         return favorites;
       } else {
         return [];

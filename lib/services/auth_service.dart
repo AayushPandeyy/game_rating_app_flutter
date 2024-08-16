@@ -79,7 +79,6 @@ class AuthService {
 
   Future<Map<String, dynamic>> verifyToken() async {
     final String? token = await getToken();
-    print(token);
     if (token == null) {
       throw Exception("Token not found");
     }

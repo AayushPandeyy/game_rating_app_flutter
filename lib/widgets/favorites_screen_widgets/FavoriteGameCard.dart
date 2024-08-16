@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/screens/FavoritesScreen.dart';
 import 'package:game_rating_app/services/favorites_service.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
@@ -18,7 +19,8 @@ class FavoriteGameCard extends StatefulWidget {
     required this.imageUrl,
     required this.title,
     required this.description,
-    required this.gameId, required this.onRemove,
+    required this.gameId,
+    required this.onRemove,
   });
 
   @override
@@ -50,7 +52,7 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
               image: NetworkImage(widget.imageUrl),
               height: 50,
               width: 50,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -94,7 +96,7 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
                       confirmBtnText: "Remove",
                       onConfirmBtnTap: () async {
                         await FavoritesService().removeFavorite(widget.gameId);
-                        widget.onRemove;
+                        widget.onRemove();
                         Navigator.pop(context);
                       });
                 },
