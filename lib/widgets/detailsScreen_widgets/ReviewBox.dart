@@ -4,11 +4,12 @@ class ReviewBox extends StatefulWidget {
   final String title;
   final String author;
   final String content;
+  final int starRating;
   const ReviewBox(
       {super.key,
       required this.title,
       required this.author,
-      required this.content});
+      required this.content, required this.starRating});
 
   @override
   State<ReviewBox> createState() => _ReviewBoxState();
@@ -83,7 +84,7 @@ class _ReviewBoxState extends State<ReviewBox> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < widget.starRating ; i++)
                   const Icon(
                     Icons.star,
                     color: Colors.pink,

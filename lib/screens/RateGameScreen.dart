@@ -5,8 +5,9 @@ import 'package:game_rating_app/services/rating_service.dart';
 import 'package:provider/provider.dart';
 
 class RateGameScreen extends StatefulWidget {
+  final VoidCallback onSubmit;
 
-  const RateGameScreen({super.key});
+  const RateGameScreen({super.key, required this.onSubmit});
 
   @override
   State<RateGameScreen> createState() => _RateGameScreenState();
@@ -42,6 +43,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
       'author': "Anonymous",
       'title': titleController.text,
       'content': contentController.text,
+      "starRating": selectedRating
     };
 
     try {
@@ -49,7 +51,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Rating submitted successfully')),
       );
-      
+      widget.onSubmit();
       Navigator.pop(context);
       reset();
     } catch (e) {

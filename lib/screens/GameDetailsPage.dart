@@ -31,15 +31,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      final gameProvider = Provider.of<GameProvider>(context, listen: false);
-      final ratingProvider =
-          Provider.of<RatingProvider>(context, listen: false);
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final game = gameProvider.selectedGame;
-      ratingProvider.fetchRatingByGameId(game!.id);
-      authProvider.getUser();
-      print(authProvider.user);
+      getRatings();
     });
+  }
+
+  void getRatings() {
+    final gameProvider = Provider.of<GameProvider>(context, listen: false);
+    final ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final game = gameProvider.selectedGame;
+    ratingProvider.fetchRatingByGameId(game!.id);
+    authProvider.getUser();
   }
 
   void getGameIdList() async {
@@ -112,6 +114,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
               title: review.title,
               author: review.author,
               content: review.content,
+              starRating: review.starRating,
             ))
         .toList();
 
@@ -248,7 +251,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const RateGameScreen()));
+                                builder: (context) => RateGameScreen(
+                                      onSubmit: getRatings,
+                                    )));
                           },
                           child: Container(
                             height: 50,
