@@ -32,7 +32,7 @@ class FavoritesService {
         return [];
       }
     } else {
-      throw Exception('Failed to load Favorites');
+      return [];
     }
   }
 

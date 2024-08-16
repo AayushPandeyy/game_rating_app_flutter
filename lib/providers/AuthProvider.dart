@@ -35,13 +35,11 @@ class AuthProvider extends ChangeNotifier {
     _isLoading = true;
     try {
       Map<String, dynamic> result = await authService.verifyToken();
-      print(result["valid"]);
       if (result['valid'] == true) {
         isLoggedIn = true;
         await getUser();
       }
     } catch (err) {
-      print(err);
       _errorMessage = 'Failed to verify token: $err';
     } finally {
       _isLoading = false;

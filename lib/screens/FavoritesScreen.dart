@@ -36,6 +36,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     if (authProvider.user != null) {
       List<Favorites> favs =
           await FavoritesService().getFavoritesByUserId(authProvider.user!.id);
+      if (favs.isEmpty) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       List<Game> fetchedGames = [];
 
       for (Favorites fav in favs) {
@@ -50,6 +55,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  void _refreshFavorites() {
+    setState(() {
+      _isLoading = true;
+    });
+    getFavoriteGames();
   }
 
   @override
@@ -71,9 +83,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           ),
         ),
         body: _isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : games.isEmpty
-                ? Center(child: Text('No Favorites added yet.'))
+                ? const Center(
+                    child: Text(
+                    'No Favorites added yet.',
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
+                        fontFamily: "Gabarito",
+                        fontWeight: FontWeight.bold),
+                  ))
                 : ListView.builder(
                     itemCount: games.length,
                     itemBuilder: (context, index) {
@@ -82,18 +102,21 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => GameDetailsPage()));
+                                  builder: (context) =>
+                                      const GameDetailsPage()));
                               gameProvider.selectGame(games[index]);
                             },
                             child: Center(
                               child: FavoriteGameCard(
+                                onRemove: _refreshFavorites,
+                                gameId: games[index].id,
                                 imageUrl: games[index].imageUrl,
                                 title: games[index].title,
                                 description: games[index].description,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                         ],

@@ -1,17 +1,24 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/services/favorites_service.dart';
+import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 
 class FavoriteGameCard extends StatefulWidget {
+  final String gameId;
   final String imageUrl;
   final String title;
   final String description;
+  final VoidCallback onRemove;
 
   const FavoriteGameCard({
     super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
+    required this.gameId, required this.onRemove,
   });
 
   @override
@@ -73,12 +80,23 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
             const SizedBox(width: 10),
             Container(
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Colors.black,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: IconButton(
                 onPressed: () {
-                  // Add delete functionality here
+                  QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.confirm,
+                      title: "Remove from favorites?",
+                      text:
+                          "Are you sure you want to remove ${widget.title} from the favorites?",
+                      confirmBtnText: "Remove",
+                      onConfirmBtnTap: () async {
+                        await FavoritesService().removeFavorite(widget.gameId);
+                        widget.onRemove;
+                        Navigator.pop(context);
+                      });
                 },
                 icon: const Icon(Icons.delete, color: Colors.white),
               ),
