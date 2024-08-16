@@ -8,7 +8,7 @@ Welcome to the **Game Rating App**! This mobile application allows you to explor
 - **Rate Video Games:** Give ratings to your favorite games and let the world know what you think.
 - **Leave Reviews:** Share your thoughts and experiences with the gaming community.
 - **Favorites List:** Add games to your favorites for easy access and organization.
-- **Seamless Backend Integration:** Powered by a robust API from the [game_rating_app_backend](https://github.com/aayushpandeyy/game_rating_app_backend) repository.
+- **Seamless Backend Integration:** Powered by a robust API from the [game_rating_backend](https://github.com/aayushpandeyy/game_rating_backend) repository.
 
 ## 🚀 Getting Started
 
@@ -17,7 +17,7 @@ Follow these steps to get the app up and running on your local machine.
 ### Prerequisites
 
 - [Flutter SDK](https://flutter.dev/docs/get-started/install) installed
-- A clone of the [game_rating_app_backend](https://github.com/aayushpandeyy/game_rating_app_backend) repository running on your local machine or server
+- A clone of the [game_rating_backend](https://github.com/aayushpandeyy/game_rating_backend) repository running on your local machine or server
 
 ### Installation
 
@@ -39,7 +39,7 @@ Follow these steps to get the app up and running on your local machine.
 
 4. **Set up the backend:**
 
-   - Make sure the [game_rating_app_backend](https://github.com/aayushpandeyy/game_rating_app_backend) is running and accessible. Update the API URL in your Flutter app if necessary.
+   - Make sure the [game_rating_backend](https://github.com/aayushpandeyy/game_rating_backend) is running and accessible. Update the API URL in your Flutter app if necessary.
 
 5. **Run the app:**
    ```bash
@@ -61,7 +61,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Thanks to the Flutter community for their excellent documentation and support.
-- Special shoutout to the creators of the [game_rating_app_backend](https://github.com/aayushpandeyy/game_rating_app_backend) for providing the API.
+- Special shoutout to the creators of the [game_rating_backend](https://github.com/aayushpandeyy/game_rating_backend) for providing the API.
 
 ---
 
