@@ -1,20 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/services/rating_service.dart';
-import 'package:provider/provider.dart';
 
 class RateGameScreen extends StatefulWidget {
+  final String? title;
+  final String? content;
+  final int? rating;
   final VoidCallback onSubmit;
 
-  const RateGameScreen({super.key, required this.onSubmit});
+  const RateGameScreen({
+    Key? key,
+    this.title,
+    this.content,
+    this.rating,
+    required this.onSubmit,
+  }) : super(key: key);
 
   @override
   State<RateGameScreen> createState() => _RateGameScreenState();
 }
 
 class _RateGameScreenState extends State<RateGameScreen> {
+  bool update = false;
   final RatingService service = RatingService();
 
   void postRating() async {
@@ -31,17 +43,9 @@ class _RateGameScreenState extends State<RateGameScreen> {
     final game = gameProvider.selectedGame;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-    if (game == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No game selected')),
-      );
-      return;
-    }
-
     final ratingData = {
-      'game_id': game.id,
-      'user_id':
-          authProvider.user!.id, // Replace with actual userId if applicable
+      'game_id': game!.id,
+      'user_id': authProvider.user!.id,
       'author': authProvider.user!.username,
       'title': titleController.text,
       'content': contentController.text,
@@ -81,6 +85,16 @@ class _RateGameScreenState extends State<RateGameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.content != null &&
+        widget.title != null &&
+        widget.rating != null) {
+      setState(() {
+        selectedRating = widget.rating;
+        update = true;
+      });
+      titleController.text = widget.title!;
+      contentController.text = widget.content!;
+    }
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
     if (game == null) {
@@ -276,10 +290,10 @@ class _RateGameScreenState extends State<RateGameScreen> {
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.pink),
                           borderRadius: BorderRadius.circular(20)),
-                      child: const Center(
+                      child:  Center(
                           child: Text(
-                        "Submit Rating",
-                        style: TextStyle(
+                        update? "Update Rating" : "Submit Rating",
+                        style: const TextStyle(
                             fontFamily: "Gabarito",
                             fontSize: 20,
                             color: Colors.pink),

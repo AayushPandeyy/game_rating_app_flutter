@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:game_rating_app/models/Rating.dart';
 import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/providers/RatingProvider.dart';
@@ -22,6 +23,7 @@ class GameDetailsPage extends StatefulWidget {
 }
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
+  Rating? yourRating;
   List<String> listOfGameIds = [];
   bool isFavorite = false;
   bool hasRated = false;
@@ -63,15 +65,18 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         }
       }
 
-      ratingProvider.ratings.map((rating) =>
-          rating.userId == authProvider.user!.id &&
-                  rating.gameId == gameProvider.selectedGame!.id
-              ? setState(() {
-                  hasRated = true;
-                })
-              : setState(() {
-                  hasRated = false;
-                }));
+      for (Rating rating in ratingProvider.ratings) {
+        if (rating.userId == authProvider.user!.id) {
+          setState(() {
+            yourRating = rating;
+            hasRated = true;
+          });
+        } else {
+          setState(() {
+            hasRated = false;
+          });
+        }
+      }
     } catch (err) {}
   }
 
@@ -268,13 +273,30 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           onTap: () {
                             hasRated
                                 ? QuickAlert.show(
+                                    showCancelBtn: true,
+                                    confirmBtnText: "Yes",
+                                    cancelBtnText: "Cancel",
+                                    onCancelBtnTap: () {
+                                      Navigator.pop(context);
+                                    },
                                     context: context,
-                                    type: QuickAlertType.success,
-                                    title: "Added to Favorites",
+                                    type: QuickAlertType.info,
+                                    title: "Already Rated",
                                     text:
-                                        "${game.title} has beed added to your favorites.",
+                                        "You have already rated the title ${game.title}. Would you like to edit your review?",
                                     onConfirmBtnTap: () {
-                                      Navigator.of(context).pop();
+                                      Navigator.pop(context);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RateGameScreen(
+                                                    onSubmit: getRatings,
+                                                    title: yourRating!.title,
+                                                    content:
+                                                        yourRating!.content,
+                                                    rating:
+                                                        yourRating!.starRating,
+                                                  )));
                                     })
                                 : Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => RateGameScreen(
