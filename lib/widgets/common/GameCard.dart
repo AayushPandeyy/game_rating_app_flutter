@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:game_rating_app/providers/GameProvider.dart';
-import 'package:game_rating_app/screens/GameDetailsPage.dart';
-import 'package:provider/provider.dart';
+
 
 class GameCard extends StatefulWidget {
   final String imageUrl;

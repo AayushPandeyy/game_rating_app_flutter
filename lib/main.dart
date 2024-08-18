@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/providers/RatingProvider.dart';
-import 'package:game_rating_app/screens/HomePage.dart';
-import 'package:game_rating_app/screens/MainPage.dart';
 import 'package:game_rating_app/screens/SplashScreen.dart';
-import 'package:game_rating_app/screens/auth/SignInScreen.dart';
 import 'package:provider/provider.dart';
 
 void main() {

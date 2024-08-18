@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/screens/MainPage.dart';
@@ -61,6 +60,5 @@ class _SplashScreenState extends State<SplashScreen> {
         )),
       ),
     ));
-    ;
   }
 }

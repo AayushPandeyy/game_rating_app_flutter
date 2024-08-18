@@ -4,7 +4,7 @@ import 'package:game_rating_app/models/Favorites.dart';
 import 'package:http/http.dart' as http;
 
 class FavoritesService {
-  final String baseUrl = 'http://192.168.1.117:8081/api/favorites';
+  final String baseUrl = 'http://192.168.1.124:8081/api/favorites';
   Future<void> addFavorites(Map<String, dynamic> fav) async {
     final url = Uri.parse(baseUrl);
 

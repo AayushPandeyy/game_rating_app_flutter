@@ -3,11 +3,11 @@ import 'package:game_rating_app/models/Rating.dart';
 import 'package:http/http.dart' as http;
 
 class RatingService {
-  final String baseUrl = 'http://192.168.1.117:8081/api/rating';
+  final String baseUrl = 'http://192.168.1.124:8081/api/rating';
 
   // Fetch ratings by game ID
   Future<List<Rating>> getRatingsByGameId(String gameId) async {
-    final url = "http://192.168.1.117:8081/api/rating/gid/${gameId}";
+    final url = "$baseUrl/gid/${gameId}";
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
