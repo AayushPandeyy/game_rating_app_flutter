@@ -119,10 +119,6 @@ class _RateGameScreenState extends State<RateGameScreen> {
     super.initState();
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     authProvider.getUser();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     if (widget.content != null &&
         widget.title != null &&
         widget.rating != null) {
@@ -133,6 +129,10 @@ class _RateGameScreenState extends State<RateGameScreen> {
       titleController.text = widget.title!;
       contentController.text = widget.content!;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
 
