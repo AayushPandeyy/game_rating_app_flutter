@@ -26,7 +26,6 @@ class AuthService {
         return null;
       }
     } catch (e) {
-      print('Error: $e');
       return null;
     }
   }

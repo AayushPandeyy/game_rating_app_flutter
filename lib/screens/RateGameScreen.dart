@@ -8,6 +8,7 @@ import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/services/rating_service.dart';
 
 class RateGameScreen extends StatefulWidget {
+  final String? ratingId;
   final String? title;
   final String? content;
   final int? rating;
@@ -19,6 +20,7 @@ class RateGameScreen extends StatefulWidget {
     this.content,
     this.rating,
     required this.onSubmit,
+    this.ratingId,
   }) : super(key: key);
 
   @override
@@ -43,17 +45,14 @@ class _RateGameScreenState extends State<RateGameScreen> {
     final game = gameProvider.selectedGame;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-    final ratingData = {
-      'game_id': game!.id,
-      'user_id': authProvider.user!.id,
-      'author': authProvider.user!.username,
-      'title': titleController.text,
-      'content': contentController.text,
-      "starRating": selectedRating
-    };
-
     try {
-      await service.postRating(ratingData);
+      await service.postRating(
+          titleController.text,
+          contentController.text,
+          selectedRating!,
+          authProvider.user!.username,
+          game!.id,
+          authProvider.user!.id);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Rating submitted successfully')),
       );
@@ -63,6 +62,45 @@ class _RateGameScreenState extends State<RateGameScreen> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to submit rating: $e')),
+      );
+    }
+  }
+
+  void updateRating() async {
+    if (selectedRating == null ||
+        titleController.text.isEmpty ||
+        contentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please complete all fields')),
+      );
+      return;
+    }
+
+    final gameProvider = Provider.of<GameProvider>(context, listen: false);
+    final game = gameProvider.selectedGame;
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    final ratingData = {
+      '_id': widget.ratingId,
+      'game_id': game!.id,
+      'user_id': authProvider.user!.id,
+      'author': authProvider.user!.username,
+      'title': titleController.text,
+      'content': contentController.text,
+      "starRating": selectedRating
+    };
+
+    try {
+      await service.updateRating(widget.ratingId!, ratingData);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Rating Updated successfully')),
+      );
+      widget.onSubmit();
+      Navigator.pop(context);
+      reset();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to Update rating: $e')),
       );
     }
   }
@@ -97,6 +135,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
     }
     final gameProvider = Provider.of<GameProvider>(context);
     final game = gameProvider.selectedGame;
+
     if (game == null) {
       return const Center(
         child: Text("No game"),
@@ -282,7 +321,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      postRating();
+                      update ? updateRating() : postRating();
                     },
                     child: Container(
                       height: 50,
@@ -290,9 +329,9 @@ class _RateGameScreenState extends State<RateGameScreen> {
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.pink),
                           borderRadius: BorderRadius.circular(20)),
-                      child:  Center(
+                      child: Center(
                           child: Text(
-                        update? "Update Rating" : "Submit Rating",
+                        update ? "Update Rating" : "Submit Rating",
                         style: const TextStyle(
                             fontFamily: "Gabarito",
                             fontSize: 20,

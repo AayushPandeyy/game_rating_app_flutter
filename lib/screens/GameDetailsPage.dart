@@ -271,6 +271,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                         const SizedBox(height: 10),
                         GestureDetector(
                           onTap: () {
+                            print(yourRating!.id);
                             hasRated
                                 ? QuickAlert.show(
                                     showCancelBtn: true,
@@ -290,6 +291,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   RateGameScreen(
+                                                    ratingId: yourRating!.id,
                                                     onSubmit: getRatings,
                                                     title: yourRating!.title,
                                                     content:

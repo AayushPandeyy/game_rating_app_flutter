@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Rating {
+  final String id;
   final String title;
   final String author;
   final String content;
@@ -8,6 +9,7 @@ class Rating {
   final int starRating;
 
   Rating({
+    required this.id,
     required this.title,
     required this.author,
     required this.content,
@@ -18,6 +20,7 @@ class Rating {
 
   factory Rating.fromJson(Map<String, dynamic> json) {
     return Rating(
+      id: json['_id'],
       title: json['title'],
       author: json['author'],
       content: json['content'],
@@ -29,12 +32,13 @@ class Rating {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'author': author,
       'content': content,
       'user_id': userId,
       'game_id': gameId,
-      'startRating': starRating
+      'starRating': starRating
     };
   }
 }
