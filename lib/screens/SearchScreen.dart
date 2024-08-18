@@ -15,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   List<Game> games = [];
   List<Game> filteredGames = [];
-
+  bool notFound = false;
   String searchQuery = '';
 
   @override
@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
       await gameProvider.fetchGames();
       setState(() {
         games = gameProvider.games;
-        filteredGames = []; // Initialize with the full list
+        filteredGames = [];
       });
     });
   }
@@ -39,8 +39,10 @@ class _SearchScreenState extends State<SearchScreen> {
             .where((game) =>
                 game.title.toLowerCase().contains(query.toLowerCase()))
             .toList();
+        notFound = true;
       } else {
         filteredGames = [];
+        notFound = false;
       }
     });
   }
@@ -51,93 +53,90 @@ class _SearchScreenState extends State<SearchScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: 350,
-                    child: TextField(
-                      style: TextStyle(color: Colors.white),
-                      onChanged: (value) {
-                        _filterGames(value);
-                      },
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        labelText: 'Search',
-                        labelStyle: TextStyle(color: Colors.white),
-                        hintText: 'Enter a search term',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 350,
+                  child: TextField(
+                    style: TextStyle(color: Colors.white),
+                    onChanged: (value) {
+                      _filterGames(value);
+                    },
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      labelText: 'Search',
+                      labelStyle: TextStyle(color: Colors.white),
+                      hintText: 'Enter a search term',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                     ),
                   ),
                 ),
               ),
-              Expanded(
-                child: filteredGames.isEmpty
-                    ? Center(
-                        child: Text(
-                          "Search Games",
-                          style: TextStyle(
-                            fontFamily: "Gabarito",
-                            fontSize: 30,
-                            color: Colors.white,
-                          ),
+            ),
+            Expanded(
+              child: filteredGames.isEmpty
+                  ? Center(
+                      child: Text(
+                        notFound ? "No Game Found" : "Search Game",
+                        style: TextStyle(
+                          fontFamily: "Gabarito",
+                          fontSize: 30,
+                          color: Colors.white,
                         ),
-                      )
-                    : ListView.builder(
-                        itemCount: filteredGames.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const GameDetailsPage()));
-                                  gameProvider
-                                      .selectGame(filteredGames[index]);
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Colors.white),
-                                    color: Colors.white,
-                                  ),
-                                  height: 50,
-                                  width: 350,
-                                  child: Center(
-                                    child: Text(
-                                      filteredGames[index].title,
-                                      style: TextStyle(
-                                        fontFamily: "Gabarito",
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                      ),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: filteredGames.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const GameDetailsPage()));
+                                gameProvider.selectGame(filteredGames[index]);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.white),
+                                  color: Colors.white,
+                                ),
+                                height: 50,
+                                width: 350,
+                                child: Center(
+                                  child: Text(
+                                    filteredGames[index].title,
+                                    style: TextStyle(
+                                      fontFamily: "Gabarito",
+                                      fontSize: 20,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );
