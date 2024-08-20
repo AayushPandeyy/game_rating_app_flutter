@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:game_rating_app/providers/AuthProvider.dart';
+import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/screens/MainPage.dart';
 import 'package:game_rating_app/screens/auth/SignInScreen.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,6 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     verify_token();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      final gameProvider = Provider.of<GameProvider>(context, listen: false);
+      gameProvider.fetchGames();
+    });
   }
 
   @override

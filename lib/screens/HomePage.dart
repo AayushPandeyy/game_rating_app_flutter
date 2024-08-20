@@ -5,6 +5,7 @@ import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/screens/AllTimeHighRatedScreen.dart';
 import 'package:game_rating_app/screens/GameDetailsPage.dart';
 import 'package:game_rating_app/widgets/common/GameCard.dart';
+import 'package:game_rating_app/widgets/common/NavDrawer.dart';
 import 'package:game_rating_app/widgets/homescreen_widgets/GameRatingCard.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    _scaffoldKey.currentState?.openDrawer();
+  }
+
+  void _closeDrawer() {
+    Navigator.of(context).pop(); // Close the drawer
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,15 +52,18 @@ class _HomePageState extends State<HomePage> {
         .toList();
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size(20, 50),
-          child: Container(
-              color: Colors.black,
-              child: authProvider.isLoading
-                  ? const CircularProgressIndicator()
-                  : Center(
-                      child: Text("Hello ${authProvider.user!.username}",
-                          style: TextStyle(color: Colors.white)))),
+        drawer: const NavDrawer(),
+        appBar: AppBar(
+          backgroundColor: Colors.pink,
+          centerTitle: true,
+          title: Text(
+            'Hello ${authProvider.user!.username}',
+            style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 40,
+                fontFamily: "AldotheApache",
+                fontWeight: FontWeight.bold),
+          ),
         ),
         body: gameProvider.isLoading
             ? Center(

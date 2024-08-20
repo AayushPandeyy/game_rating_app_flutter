@@ -132,10 +132,15 @@ class GameProvider extends ChangeNotifier {
   }
 
   void getTopRatedGames(List<Game> games) {
+    _isLoading = true;
+
+    List<Game> unsortedGames = games;
     // Sort the games list by rating in descending order
-    games.sort((a, b) => b.rating.compareTo(a.rating));
+    unsortedGames.sort((a, b) => b.rating.compareTo(a.rating));
 
     // Take the top 5 rated games
-    _topRated = games.toList();
+    _topRated = unsortedGames.toList();
+
+    _isLoading = false;
   }
 }

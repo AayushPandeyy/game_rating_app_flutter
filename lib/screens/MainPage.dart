@@ -18,10 +18,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final gameProvider = Provider.of<GameProvider>(context, listen: false);
-      gameProvider.fetchGames();
-    });
   }
 
   int currentSelected = 0;
