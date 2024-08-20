@@ -112,12 +112,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                 gameId: games[index].id,
                                 imageUrl: games[index].imageUrl,
                                 title: games[index].title,
-                                description: games[index].description,
+                                developer: games[index].developer,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
                           ),
                         ],
                       );

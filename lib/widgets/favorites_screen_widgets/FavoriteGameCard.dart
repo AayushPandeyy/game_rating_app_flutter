@@ -7,16 +7,16 @@ class FavoriteGameCard extends StatefulWidget {
   final String gameId;
   final String imageUrl;
   final String title;
-  final String description;
+  final String developer;
   final VoidCallback onRemove;
 
   const FavoriteGameCard({
     super.key,
     required this.imageUrl,
     required this.title,
-    required this.description,
     required this.gameId,
     required this.onRemove,
+    required this.developer,
   });
 
   @override
@@ -30,27 +30,39 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Color.fromARGB(255, 255, 223, 223), // Adjust color as needed
-        ),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.red)),
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            Image(
-              image: NetworkImage(widget.imageUrl),
-              height: 50,
-              width: 50,
-              fit: BoxFit.contain,
+            CircleAvatar(
+              radius: 30,
+              backgroundImage: NetworkImage(widget.imageUrl),
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: AutoSizeText(
-                maxLines: 2,
-                widget.title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+              child: Column(
+                children: [
+                  AutoSizeText(
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    widget.title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.red),
+                  ),
+                  AutoSizeText(
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    widget.developer,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(width: 10),
@@ -61,10 +73,13 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.black,
+                    color: Colors.pink,
                   ),
                 ),
-                Icon(Icons.star)
+                Icon(
+                  Icons.star,
+                  color: Colors.pink,
+                )
               ],
             ),
             const SizedBox(width: 10),
@@ -88,7 +103,7 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
                         Navigator.pop(context);
                       });
                 },
-                icon: const Icon(Icons.delete, color: Colors.white),
+                icon: const Icon(Icons.favorite, color: Colors.white),
               ),
             ),
           ],
