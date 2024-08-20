@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/providers/AuthProvider.dart';
 import 'package:game_rating_app/providers/GameProvider.dart';
+import 'package:game_rating_app/screens/AllTimeHighRatedScreen.dart';
 import 'package:game_rating_app/screens/GameDetailsPage.dart';
 import 'package:game_rating_app/widgets/common/GameCard.dart';
 import 'package:game_rating_app/widgets/homescreen_widgets/GameRatingCard.dart';
@@ -105,7 +106,34 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const Alltimehighratedscreen()));
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.pink),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: const Center(
+                              child: Text(
+                            "See All",
+                            style: TextStyle(
+                                fontFamily: "Gabarito",
+                                fontSize: 20,
+                                color: Colors.pink),
+                          )),
+                        ),
+                      ),
                     ],
                   ),
                 ),

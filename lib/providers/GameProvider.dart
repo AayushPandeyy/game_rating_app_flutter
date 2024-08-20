@@ -136,6 +136,6 @@ class GameProvider extends ChangeNotifier {
     games.sort((a, b) => b.rating.compareTo(a.rating));
 
     // Take the top 5 rated games
-    _topRated = games.take(5).toList();
+    _topRated = games.toList();
   }
 }

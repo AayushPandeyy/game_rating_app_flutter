@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:game_rating_app/screens/GameDetailsPage.dart';
 
@@ -37,18 +38,19 @@ class _GameRatingCardState extends State<GameRatingCard> {
                 image: NetworkImage(widget.imageUrl),
                 height: 50,
                 width: 50,
-                fit: BoxFit.cover,
+                fit: BoxFit.fitWidth,
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    AutoSizeText(
+                      maxLines: 1,
                       widget.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        // fontSize: 18,
                       ),
                     ),
                     Text(
@@ -57,11 +59,9 @@ class _GameRatingCardState extends State<GameRatingCard> {
                         color: Colors.grey[700],
                       ),
                     ),
-                    Text(
+                    AutoSizeText(
+                      maxLines: 1,
                       widget.publisher,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
                     ),
                   ],
                 ),
@@ -70,7 +70,7 @@ class _GameRatingCardState extends State<GameRatingCard> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    widget.rank.toString(),
+                    "# ${widget.rank.toString()}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
