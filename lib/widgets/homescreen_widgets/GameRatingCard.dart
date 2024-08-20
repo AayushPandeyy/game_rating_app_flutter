@@ -2,7 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:game_rating_app/screens/GameDetailsPage.dart';
 
 class GameRatingCard extends StatefulWidget {
-  const GameRatingCard({super.key});
+  final String imageUrl;
+  final String title;
+  final String platform;
+  final String publisher;
+  final double rating;
+  final int rank;
+  const GameRatingCard(
+      {super.key,
+      required this.imageUrl,
+      required this.title,
+      required this.platform,
+      required this.publisher,
+      required this.rating,
+      required this.rank});
 
   @override
   State<GameRatingCard> createState() => _GameRatingCardState();
@@ -13,80 +26,78 @@ class _GameRatingCardState extends State<GameRatingCard> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) =>const GameDetailsPage()));
-          },
-          child: Container(
-            width: 350,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Colors.yellow),
-            padding: EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Image(
-                  image: NetworkImage(
-                      "https://cloudgames.gg/wp-content/uploads/the-wolf-among-us-2-portrait.jpg"),
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Super Mario Galaxy',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(
-                        'Nintendo, 2007',
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      Text(
-                        'Wii',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+        Container(
+          width: 350,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.yellow),
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: [
+              Image(
+                image: NetworkImage(widget.imageUrl),
+                height: 50,
+                width: 50,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '#1',
+                      widget.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      '97.64 %',
+                      widget.platform,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.black,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    Text(
+                      widget.publisher,
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.rank.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        widget.rating.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Icon(Icons.star)
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
       ],
-      
     );
-    
   }
 }

@@ -5,8 +5,10 @@ import 'package:game_rating_app/services/game_service.dart';
 class GameProvider extends ChangeNotifier {
   final GameService gameService = GameService();
   List<Game> _games = [];
+  List<Game> _topRated = [];
 
   List<Game> get games => _games;
+  List<Game> get topRated => _topRated;
 
   Game? _selectedGame;
   Game? get selectedGame => _selectedGame;
@@ -25,6 +27,7 @@ class GameProvider extends ChangeNotifier {
 
     try {
       _games = await gameService.fetchGames();
+      getTopRatedGames(_games);
     } catch (e) {
       _errorMessage = 'Failed to load games: $e';
     } finally {
@@ -87,6 +90,25 @@ class GameProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updateRatingNumbers(String id, double rating) async {
+    _isLoading = true;
+    _errorMessage = '';
+    notifyListeners();
+
+    try {
+      Game updatedGame = await gameService.updateGameRating(id, rating);
+      int index = _games.indexWhere((g) => g.id == id);
+      if (index != -1) {
+        _games[index] = updatedGame;
+      }
+    } catch (e) {
+      _errorMessage = 'Failed to update game: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   // Delete a game
   Future<void> deleteGame(String id) async {
     _isLoading = true;
@@ -107,5 +129,13 @@ class GameProvider extends ChangeNotifier {
   void selectGame(Game game) {
     _selectedGame = game;
     notifyListeners();
+  }
+
+  void getTopRatedGames(List<Game> games) {
+    // Sort the games list by rating in descending order
+    games.sort((a, b) => b.rating.compareTo(a.rating));
+
+    // Take the top 5 rated games
+    _topRated = games.take(5).toList();
   }
 }

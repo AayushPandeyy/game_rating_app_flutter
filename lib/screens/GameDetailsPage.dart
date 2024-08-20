@@ -8,6 +8,7 @@ import 'package:game_rating_app/providers/GameProvider.dart';
 import 'package:game_rating_app/providers/RatingProvider.dart';
 import 'package:game_rating_app/screens/RateGameScreen.dart';
 import 'package:game_rating_app/services/favorites_service.dart';
+import 'package:game_rating_app/services/game_service.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/DetailsBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/ReviewBox.dart';
 import 'package:game_rating_app/widgets/detailsScreen_widgets/SystemRequirements.dart';
@@ -134,307 +135,319 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
             ))
         .toList();
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size(400, 100),
-          child: Container(
-            color: Colors.black,
-            height: 50,
-            child: Row(children: [
-              const SizedBox(width: 20),
-              IconButton(
-                alignment: Alignment.centerLeft,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back_ios),
-                color: Colors.white,
-                iconSize: 30,
+    return gameProvider.isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : SafeArea(
+            child: Scaffold(
+              appBar: PreferredSize(
+                preferredSize: const Size(400, 100),
+                child: Container(
+                  color: Colors.black,
+                  height: 50,
+                  child: Row(children: [
+                    const SizedBox(width: 20),
+                    IconButton(
+                      alignment: Alignment.centerLeft,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                      iconSize: 30,
+                    ),
+                    const Text(
+                      "Home",
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ]),
+                ),
               ),
-              const Text(
-                "Home",
-                style: TextStyle(color: Colors.white),
-              )
-            ]),
-          ),
-        ),
-        body: ratingProvider.isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Container(
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    image: DecorationImage(
-                        opacity: 0.2,
-                        image: NetworkImage(game.imageUrl),
-                        fit: BoxFit.contain)),
-                height: double.infinity,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                            height: 250,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(game.imageUrl),
-                                fit: BoxFit.contain,
+              body: ratingProvider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Container(
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          image: DecorationImage(
+                              opacity: 0.2,
+                              image: NetworkImage(game.imageUrl),
+                              fit: BoxFit.contain)),
+                      height: double.infinity,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(game.imageUrl),
+                                      fit: BoxFit.contain,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Container()),
+                              const SizedBox(height: 10),
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    border: const GradientBoxBorder(
+                                      gradient: LinearGradient(
+                                          colors: [Colors.black, Colors.red],
+                                          stops: [0.4, 0.7]),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    game.title,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontSize: 30,
+                                        fontFamily: "AldotheApache",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red),
+                                  ),
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Container()),
-                        const SizedBox(height: 10),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: const GradientBoxBorder(
-                                gradient: LinearGradient(
-                                    colors: [Colors.black, Colors.red],
-                                    stops: [0.4, 0.7]),
+                              const SizedBox(height: 10),
+                              const DetailsBox(),
+                              const SizedBox(height: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  !isFavorite
+                                      ? addToFavorites()
+                                      : QuickAlert.show(
+                                          context: context,
+                                          type: QuickAlertType.info,
+                                          title: "Already in your Favorites",
+                                          text:
+                                              "${game.title} is already in your favorites.");
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.pink),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Center(
+                                      child: Text(
+                                    favoriteButtonText,
+                                    style: const TextStyle(
+                                        fontFamily: "Gabarito",
+                                        fontSize: 20,
+                                        color: Colors.pink),
+                                  )),
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: Text(
-                              game.title,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontFamily: "AldotheApache",
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const DetailsBox(),
-                        const SizedBox(height: 10),
-                        GestureDetector(
-                          onTap: () {
-                            !isFavorite
-                                ? addToFavorites()
-                                : QuickAlert.show(
-                                    context: context,
-                                    type: QuickAlertType.info,
-                                    title: "Already in your Favorites",
-                                    text:
-                                        "${game.title} is already in your favorites.");
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.pink),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Center(
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: 300,
                                 child: Text(
-                              favoriteButtonText,
-                              style: const TextStyle(
-                                  fontFamily: "Gabarito",
-                                  fontSize: 20,
-                                  color: Colors.pink),
-                            )),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: 300,
-                          child: Text(
-                            game.description,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "SpaceGrotesk"),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 40,
-                              color: Colors.pink,
-                            ),
-                            Text(
-                              game.rating.toString(),
-                              style: TextStyle(
-                                  fontFamily: "Gabarito",
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.pink),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        GestureDetector(
-                          onTap: () {
-                            hasRated
-                                ? QuickAlert.show(
-                                    showCancelBtn: true,
-                                    confirmBtnText: "Yes",
-                                    cancelBtnText: "Cancel",
-                                    onCancelBtnTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    context: context,
-                                    type: QuickAlertType.info,
-                                    title: "Already Rated",
-                                    text:
-                                        "You have already rated the title ${game.title}. Would you like to edit your review?",
-                                    onConfirmBtnTap: () {
-                                      Navigator.pop(context);
-                                      Navigator.of(context).push(
+                                  game.description,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "SpaceGrotesk"),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    size: 40,
+                                    color: Colors.pink,
+                                  ),
+                                  Text(
+                                    "${game.rating.toString()} (${game.totalRaters})",
+                                    style: const TextStyle(
+                                        fontFamily: "Gabarito",
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.pink),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  hasRated
+                                      ? QuickAlert.show(
+                                          showCancelBtn: true,
+                                          confirmBtnText: "Yes",
+                                          cancelBtnText: "Cancel",
+                                          onCancelBtnTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          context: context,
+                                          type: QuickAlertType.info,
+                                          title: "Already Rated",
+                                          text:
+                                              "You have already rated the title ${game.title}. Would you like to edit your review?",
+                                          onConfirmBtnTap: () {
+                                            Navigator.pop(context);
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RateGameScreen(
+                                                          ratingId:
+                                                              yourRating!.id,
+                                                          onSubmit: getRatings,
+                                                          title:
+                                                              yourRating!.title,
+                                                          content: yourRating!
+                                                              .content,
+                                                          rating: yourRating!
+                                                              .starRating,
+                                                        )));
+                                          })
+                                      : Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   RateGameScreen(
-                                                    ratingId: yourRating!.id,
-                                                    onSubmit: getRatings,
-                                                    title: yourRating!.title,
-                                                    content:
-                                                        yourRating!.content,
-                                                    rating:
-                                                        yourRating!.starRating,
+                                                    onSubmit: () {
+                                                      getRatings();
+                                                    },
                                                   )));
-                                    })
-                                : Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => RateGameScreen(
-                                          onSubmit: getRatings,
-                                        )));
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.pink),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: const Center(
-                                child: Text(
-                              "Rate Now",
-                              style: TextStyle(
-                                  fontFamily: "Gabarito",
-                                  fontSize: 20,
-                                  color: Colors.pink),
-                            )),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Center(
-                          child: Text(
-                            "Screenshots",
-                            style: TextStyle(
-                                fontFamily: "AldotheApache",
-                                fontSize: 40,
-                                color: Colors.yellow),
-                          ),
-                        ),
-                        CarouselSlider(
-                            items: screenshots,
-                            options: CarouselOptions(
-                                enableInfiniteScroll: false,
-                                enlargeCenterPage: true)),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "System Requirements",
-                          style: TextStyle(
-                              fontFamily: "AldotheApache",
-                              fontSize: 40,
-                              color: Colors.yellow),
-                        ),
-                        const SizedBox(height: 10),
-                        SystemRequirements(
-                            os: game.os,
-                            processor: game.processor,
-                            memory: game.memory,
-                            graphics: game.graphics),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Game Reviews",
-                          style: TextStyle(
-                              fontFamily: "AldotheApache",
-                              fontSize: 40,
-                              color: Colors.yellow),
-                        ),
-                        const SizedBox(height: 10),
-                        ratingProvider.ratings.isEmpty
-                            ? Container(
-                                height: 200,
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: AutoSizeText(
-                                      maxLines: 1,
-                                      "No Reviews Found",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 30),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : CarouselSlider(
-                                items: reviewWidgets,
-                                options: CarouselOptions(
-                                  height: 350,
-                                  enableInfiniteScroll: false,
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.pink),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Center(
+                                      child: Text(
+                                    "Rate Now",
+                                    style: TextStyle(
+                                        fontFamily: "Gabarito",
+                                        fontSize: 20,
+                                        color: Colors.pink),
+                                  )),
                                 ),
                               ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Play Now On :",
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.grey,
-                              fontFamily: "Gabarito"),
+                              const SizedBox(height: 10),
+                              const Center(
+                                child: Text(
+                                  "Screenshots",
+                                  style: TextStyle(
+                                      fontFamily: "AldotheApache",
+                                      fontSize: 40,
+                                      color: Colors.yellow),
+                                ),
+                              ),
+                              CarouselSlider(
+                                  items: screenshots,
+                                  options: CarouselOptions(
+                                      enableInfiniteScroll: false,
+                                      enlargeCenterPage: true)),
+                              const SizedBox(height: 10),
+                              const Text(
+                                "System Requirements",
+                                style: TextStyle(
+                                    fontFamily: "AldotheApache",
+                                    fontSize: 40,
+                                    color: Colors.yellow),
+                              ),
+                              const SizedBox(height: 10),
+                              SystemRequirements(
+                                  os: game.os,
+                                  processor: game.processor,
+                                  memory: game.memory,
+                                  graphics: game.graphics),
+                              const SizedBox(height: 10),
+                              const Text(
+                                "Game Reviews",
+                                style: TextStyle(
+                                    fontFamily: "AldotheApache",
+                                    fontSize: 40,
+                                    color: Colors.yellow),
+                              ),
+                              const SizedBox(height: 10),
+                              ratingProvider.ratings.isEmpty
+                                  ? Container(
+                                      height: 200,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: AutoSizeText(
+                                            maxLines: 1,
+                                            "No Reviews Found",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 30),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : CarouselSlider(
+                                      items: reviewWidgets,
+                                      options: CarouselOptions(
+                                        height: 350,
+                                        enableInfiniteScroll: false,
+                                      ),
+                                    ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "Play Now On :",
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.grey,
+                                    fontFamily: "Gabarito"),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Image(
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        "https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png"),
+                                  ),
+                                  Image(
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        "https://upload.wikimedia.org/wikipedia/commons/a/a7/Epic_Games_logo.png"),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                // width: 250,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 87, 80, 80))),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Version : 1.0",
+                                style: TextStyle(
+                                    color: Colors.grey, fontFamily: "Gabarito"),
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Image(
-                              height: 100,
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  "https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png"),
-                            ),
-                            Image(
-                              height: 100,
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  "https://upload.wikimedia.org/wikipedia/commons/a/a7/Epic_Games_logo.png"),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          // width: 250,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 87, 80, 80))),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Version : 1.0",
-                          style: TextStyle(
-                              color: Colors.grey, fontFamily: "Gabarito"),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-      ),
-    );
+            ),
+          );
   }
 }

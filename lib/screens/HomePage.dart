@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     final gameProvider = Provider.of<GameProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final games = gameProvider.games;
+    final topRated = gameProvider.topRated;
 
     List<Widget> carouselItems = games
         .map((game) => GestureDetector(
@@ -60,7 +61,6 @@ class _HomePageState extends State<HomePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      
                       const SizedBox(height: 20),
                       CarouselSlider(
                         items: carouselItems,
@@ -88,7 +88,22 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         children: [
                           for (int index = 0; index < 5; index++)
-                            const GameRatingCard(),
+                            GestureDetector(
+                              onTap: () {
+                                gameProvider.selectGame(topRated[index]);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GameDetailsPage()));
+                              },
+                              child: GameRatingCard(
+                                imageUrl: topRated[index].imageUrl,
+                                title: topRated[index].title,
+                                publisher: topRated[index].publisher,
+                                rating: topRated[index].rating,
+                                platform: topRated[index].platform,
+                                rank: index + 1,
+                              ),
+                            ),
                         ],
                       )
                     ],

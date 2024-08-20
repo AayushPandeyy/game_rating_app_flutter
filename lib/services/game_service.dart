@@ -60,6 +60,41 @@ class GameService {
     }
   }
 
+  Future<Game> updateGameRating(String gameId, double newRating) async {
+    try {
+      // API URL for updating the game rating
+      final url = Uri.parse('$baseUrl/rating/$gameId');
+
+      // Create the request body
+      final body = jsonEncode({'newRating': newRating});
+
+      // Send the PATCH request
+      final response = await http.patch(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        print('Rating updated successfully.');
+
+        // Decode the response body and return the updated Game object
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        return Game.fromJson(
+            responseData); // Assuming Game has a fromJson constructor
+      } else {
+        print('Failed to update rating. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        throw Exception('Failed to update rating');
+      }
+    } catch (e) {
+      print('Error updating rating: $e');
+      throw e;
+    }
+  }
+
   // Delete a game
   Future<void> deleteGame(String id) async {
     final response = await http.delete(Uri.parse('$baseUrl/$id'));

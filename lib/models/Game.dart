@@ -14,24 +14,25 @@ class Game {
   final String price;
   final String publisher;
   final String imageUrl;
+  final int totalRaters;
 
-  Game({
-    required this.id,
-    required this.title,
-    required this.genre,
-    required this.developer,
-    required this.releaseDate,
-    required this.rating,
-    required this.platform,
-    required this.description,
-    required this.os,
-    required this.processor,
-    required this.memory,
-    required this.graphics,
-    required this.price,
-    required this.publisher,
-    required this.imageUrl,
-  });
+  Game(
+      {required this.id,
+      required this.title,
+      required this.genre,
+      required this.developer,
+      required this.releaseDate,
+      required this.rating,
+      required this.platform,
+      required this.description,
+      required this.os,
+      required this.processor,
+      required this.memory,
+      required this.graphics,
+      required this.price,
+      required this.publisher,
+      required this.imageUrl,
+      required this.totalRaters});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
@@ -50,6 +51,7 @@ class Game {
       price: json['Price'],
       publisher: json['Publisher'],
       imageUrl: json['imageUrl'],
+      totalRaters: json['totalRaters'],
     );
   }
 
@@ -69,6 +71,7 @@ class Game {
       'Price': price,
       'Publisher': publisher,
       'imageUrl': imageUrl,
+      'totalRaters': totalRaters
     };
   }
 }

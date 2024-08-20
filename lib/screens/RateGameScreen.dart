@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:game_rating_app/services/game_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:game_rating_app/providers/AuthProvider.dart';
@@ -53,6 +54,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
           authProvider.user!.username,
           game!.id,
           authProvider.user!.id);
+      updateRatingAndRaters(game.id, selectedRating!.toDouble());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Rating submitted successfully')),
       );
@@ -92,6 +94,7 @@ class _RateGameScreenState extends State<RateGameScreen> {
 
     try {
       await service.updateRating(widget.ratingId!, ratingData);
+      updateRatingAndRaters(game.id, selectedRating!.toDouble());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Rating Updated successfully')),
       );
@@ -108,6 +111,22 @@ class _RateGameScreenState extends State<RateGameScreen> {
   void reset() {
     titleController.text = "";
     contentController.text = "";
+  }
+
+  void updateRatingAndRaters(String id, double rating) async {
+    try {
+      if (selectedRating == null ||
+          titleController.text.isEmpty ||
+          contentController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please complete all fields')),
+        );
+        return;
+      }
+      final gameProvider = Provider.of<GameProvider>(context, listen: false);
+
+      await gameProvider.updateRatingNumbers(id, rating);
+    } catch (err) {}
   }
 
   TextEditingController contentController = TextEditingController();
