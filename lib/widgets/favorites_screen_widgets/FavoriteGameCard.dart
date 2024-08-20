@@ -7,7 +7,7 @@ class FavoriteGameCard extends StatefulWidget {
   final String gameId;
   final String imageUrl;
   final String title;
-  final String developer;
+  final String publisher;
   final VoidCallback onRemove;
 
   const FavoriteGameCard({
@@ -16,7 +16,7 @@ class FavoriteGameCard extends StatefulWidget {
     required this.title,
     required this.gameId,
     required this.onRemove,
-    required this.developer,
+    required this.publisher,
   });
 
   @override
@@ -55,7 +55,7 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
                   AutoSizeText(
                     textAlign: TextAlign.center,
                     maxLines: 2,
-                    widget.developer,
+                    widget.publisher,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
@@ -66,8 +66,8 @@ class _FavoriteGameCardState extends State<FavoriteGameCard> {
               ),
             ),
             const SizedBox(width: 10),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Text(
                   '4',
                   style: TextStyle(

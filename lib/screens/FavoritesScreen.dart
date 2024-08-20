@@ -112,7 +112,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                 gameId: games[index].id,
                                 imageUrl: games[index].imageUrl,
                                 title: games[index].title,
-                                developer: games[index].developer,
+                                publisher: games[index].publisher,
                               ),
                             ),
                           ),
