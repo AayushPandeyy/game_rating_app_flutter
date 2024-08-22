@@ -16,13 +16,29 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final AuthProvider authProvider = AuthProvider();
 
-  void verify_token() async {
-    authProvider.verify_token();
-    if (authProvider.isLogged == null) {
-      return;
-    }
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await verifyAndLoadData();
+    });
+  }
+
+  Future<void> verifyAndLoadData() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final gameProvider = Provider.of<GameProvider>(context, listen: false);
+
+    // Run both verification and game fetching in parallel
+    await Future.wait([
+      authProvider.verify_token(),
+      gameProvider.fetchGames(),
+    ]);
+
     await Future.delayed(const Duration(seconds: 2));
-    if (authProvider.isLogged!) {
+
+    if (authProvider.isLogged != null &&
+        authProvider.isLogged! &&
+        !authProvider.isLoading) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainPage()),
       );
@@ -31,17 +47,6 @@ class _SplashScreenState extends State<SplashScreen> {
         MaterialPageRoute(builder: (context) => const SignInScreen()),
       );
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    verify_token();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      final gameProvider = Provider.of<GameProvider>(context, listen: false);
-      gameProvider.fetchGames();
-    });
   }
 
   @override
